@@ -71,5 +71,5 @@ $(document).ready(function () {
         },
     });
 });
-GitHubCalendar(".calendar", "ankitdeshpande");
-GitHubCalendar(".calendar", "ankitdeshpande", { responsive: true });
+// GitHubCalendar(".calendar", "ankitdeshpande");
+// GitHubCalendar(".calendar", "ankitdeshpande", { responsive: true });
