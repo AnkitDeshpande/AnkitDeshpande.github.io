@@ -1262,15 +1262,19 @@ rect.ContributionCalendar-day[data-level="4"] {
 
 .calendar {
     font-family: Helvetica, arial;
-    /* border: 0.2px solid #DDDDDD; */
+    border: 0.2px solid #dddddd;
     border-radius: 5px;
-    min-height: 243px;
+    min-height: 200px;
     text-align: center;
-    /* margin: 0 auto; */
+    margin: 0 auto;
     margin-top: 35px;
     background-color: #0d1117;
     border: none;
     padding: 25px;
+}
+
+.calendar > img {
+    width: max-content;
 }
 
 .calendar-graph text.wday,
