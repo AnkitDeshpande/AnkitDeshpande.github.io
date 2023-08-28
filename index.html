@@ -11,6 +11,10 @@
         <link rel="stylesheet" href="ASSETS/CSS/swiper-bundle.min.css" />
         <!--==================== CSS ====================-->
         <link rel="stylesheet" href="ASSETS/CSS/style.css" />
+        <link
+            rel="icon"
+            href="img/profile-removebg-preview.png"
+            type="image/png" />
         <title>My Portfolio</title>
     </head>
 
@@ -105,6 +109,9 @@
                         </div>
                         <div class="home__data">
                             <h1 class="home__title">Hi, I'm Ankit</h1>
+                            <div class="text-box">
+                                <h3><span class="auto-input"></span></h3>
+                            </div>
                             <p class="home__description">
                                 Back-End developer, with extensive knowledge and
                                 1200+ of experience, working in web
@@ -117,7 +124,9 @@
                         </div>
                     </div>
                     <div class="home__scroll">
-                        <a href="" class="home__scroll-button button--flex">
+                        <a
+                            href="#about"
+                            class="home__scroll-button button--flex">
                             <i class="uil uil-mouse-alt home__scroll-mouse"></i>
                             <span class="home__scroll-name">Scroll Down</span>
                             <i
@@ -170,6 +179,16 @@
                                     class="uil uil-download-alt button__icon"></i>
                             </a>
                         </div>
+                    </div>
+                    <div class="home__scroll" style="margin-top: 50px">
+                        <a
+                            href="#skills"
+                            class="home__scroll-button button--flex">
+                            <i class="uil uil-mouse-alt home__scroll-mouse"></i>
+                            <span class="home__scroll-name">Scroll Down</span>
+                            <i
+                                class="uil uil-arrow-down home__scroll-arrow"></i>
+                        </a>
                     </div>
                 </div>
             </section>
@@ -578,7 +597,12 @@
                             <img
                                 src="img/Asos.jpg"
                                 alt="ASOS"
-                                class="portfolio__img" />
+                                class="portfolio__img"
+                                style="
+                                    width: 100%;
+                                    max-width: 400px;
+                                    height: auto;
+                                " />
                             <div class="portfolio__data">
                                 <h3 class="portfolio__title">Retro Walk</h3>
                                 <p class="portfolio__description">
@@ -624,17 +648,25 @@
                             <img
                                 src="img/Sanke and apples.png"
                                 alt=""
-                                class="portfolio__img" />
+                                class="portfolio__img"
+                                style="
+                                    width: 100%;
+                                    max-width: 400px;
+                                    height: auto;
+                                " />
                             <div class="portfolio__data">
                                 <h3 class="portfolio__title">
                                     Snake and Apple
                                 </h3>
                                 <p class="portfolio__description">
-                                    A simple game where a snake moves around the
-                                    screen, eating apples and growing longer
-                                    while avoiding collisions with walls or
-                                    itself.
+                                    "Snake and Apple" is an engaging and
+                                    addictive game that brings back the
+                                    nostalgia of classic arcade games. In this
+                                    game, players control a snake that slithers
+                                    around the screen, hungrily consuming apples
+                                    to grow longer.
                                 </p>
+
                                 <p class="portfolio__description">
                                     <span class="portfolio__description-imp"
                                         >Features:</span
@@ -666,10 +698,15 @@
                         <!--==================== PORTFOLIO 3 ====================-->
                         <div class="portfolio__content grid swiper-slide">
                             <img
-                                style="border: 2px solid rgb(126, 196, 80)"
+                                style=""
                                 src="img/Fusion wear.png"
                                 alt=""
-                                class="portfolio__img" />
+                                class="portfolio__img"
+                                style="
+                                    width: 100%;
+                                    max-width: 400px;
+                                    height: auto;
+                                " />
                             <div class="portfolio__data">
                                 <h3 class="portfolio__title">Fusion Wear</h3>
                                 <p class="portfolio__description">
@@ -685,10 +722,7 @@
                                     >
                                     <br />
                                     User and Admin authentication & validation
-                                    with session uuid. Administrator Role of the
-                                    entire application Only admins can
-                                    add/update/delete plants, planters, seeds
-                                    from main database.
+                                    with session uuid.
                                 </p>
                                 <p class="portfolio__description">
                                     <span class="portfolio__description-imp"
@@ -759,7 +793,9 @@
                                 </a>
                             </div>
                         </div>
-                        <!--==================== PORTFOLIO 4  ====================-->
+                        <!--==================== PORTFOLIO 5  ====================-->
+                        <!-- add here -->
+                        <!--==================== PORTFOLIO 5  ====================-->
                     </div>
                     <div class="swiper-button-next">
                         <i
@@ -895,9 +931,15 @@
         <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
         <script>
             var typed = new Typed(".auto-input", {
-                strings: ["I am Web Developer", "I am Believer"],
-                typeSpeed: 100,
-                backSpeed: 100,
+                strings: [
+                    "I am Web Developer",
+                    "I am Believer",
+                    "I am a Learner",
+                ],
+                typeSpeed: 50, // Faster typing speed
+                backSpeed: 30, // Slower backspacing speed
+                startDelay: 500, // Delay before typing starts
+                backDelay: 1500, // Delay before backspacing starts
                 loop: true,
             });
         </script>
