@@ -1434,13 +1434,14 @@ text.ContributionCalendar-label {
 }
 
 .tech-stack {
+    margin-top: 50px;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
 
 .tech-stack-image {
-    width: 200px;
+    width: 170px;
     padding: 25px;
     border-radius: 35px;
 }
