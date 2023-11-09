@@ -62,6 +62,7 @@
                                 href="Ankit-Deshpande-Resume.pdf"
                                 target="_blank"
                                 download="Ankit-Deshpande-Resume.pdf"
+                                onclick="resume()"
                                 class="nav__link">
                                 <i class="uil uil-message nav__icon"></i>Resume
                             </a>
@@ -174,8 +175,9 @@
                         </div>
                         <div class="about__buttons btnResume">
                             <a
-                                download=""
+                                target="_blank"
                                 href="Ankit-Deshpande-Resume.pdf"
+                                download="Ankit-Deshpande-Resume.pdf"
                                 class="button button--flex">
                                 Download Resume
                                 <i
@@ -1117,4 +1119,11 @@
             });
         </script>
     </body>
+    <script>
+        function resume() {
+            window.open(
+                "https://drive.google.com/file/d/1FC-rTMbvKBYO01HuzdCED62yriKlENp6/view"
+            );
+        }
+    </script>
 </html>
