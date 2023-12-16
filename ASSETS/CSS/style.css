@@ -380,12 +380,14 @@ img {
     border-radius: 0.5rem;
     font-weight: var(--font-medium);
 }
+
 .btnResume {
     display: flex;
     /* text-align: center; */
     justify-content: center;
     /* justify-items: center; */
 }
+
 #btnp {
     width: 95px;
     text-align: center;
@@ -412,10 +414,13 @@ img {
     border-radius: 0.5rem;
     justify-self: center;
     align-self: center;
-    width: 200px; /* Adjust the width and height as needed */
+    width: 200px;
+    /* Adjust the width and height as needed */
     height: 270px;
-    border-radius: 50%; /* Makes the element circular */
-    overflow: hidden; /* Clips the image to the circular shape */
+    border-radius: 50%;
+    /* Makes the element circular */
+    overflow: hidden;
+    /* Clips the image to the circular shape */
 }
 
 .about__description {
@@ -523,6 +528,7 @@ img {
 .skills__css {
     width: 90%;
 }
+
 .skills__js {
     width: 75%;
 }
@@ -530,24 +536,31 @@ img {
 .skills__java {
     width: 90%;
 }
+
 .skills__Git {
     width: 70%;
 }
+
 .skills__DSA {
     width: 80%;
 }
+
 .skills__mysql {
     width: 90%;
 }
+
 .skills__hib {
     width: 80%;
 }
+
 .skills__Communication {
     width: 95%;
 }
+
 .skills__Team {
     width: 85%;
 }
+
 .skills__close .skills__list {
     height: 0;
     overflow: hidden;
@@ -707,7 +720,7 @@ img {
 
 } */
 
-.swiper-horizontal > .swiper-pagination-bullets {
+.swiper-horizontal>.swiper-pagination-bullets {
     bottom: -2.5rem;
 }
 
@@ -1070,6 +1083,7 @@ img {
 /* For large devices */
 
 @media screen and (min-width: 1024px) {
+
     .header,
     .main,
     .footer__container {
@@ -1100,7 +1114,7 @@ img {
         right: -3.5rem;
     }
 
-    .swiper-container-horizontal > .swiper-pagination-bullets {
+    .swiper-container-horizontal>.swiper-pagination-bullets {
         bottom: -4.5rem;
     }
 
@@ -1256,7 +1270,7 @@ rect.ContributionCalendar-day[data-level="4"] {
     fill: var(--color-calendar-graph-day-L4-bg);
 }
 
-.calendar .width-full > .float-left {
+.calendar .width-full>.float-left {
     display: none;
 }
 
@@ -1273,7 +1287,7 @@ rect.ContributionCalendar-day[data-level="4"] {
     padding: 25px;
 }
 
-.calendar > img {
+.calendar>img {
     width: max-content;
 }
 
