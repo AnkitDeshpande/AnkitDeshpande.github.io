@@ -84,8 +84,18 @@ body.dark-theme {
     --title-color: hsl(var(--hue-color), 4%, 79%);
     --text-color: hsl(var(--hue-color), 4%, 75%);
     --input-color: hsl(var(--hue-color), 2%, 16%);
-    --body-color: hsl(var(--hue-color), 8%, 12%);
-    --container-color: hsl(var(--hue-color), 6%, 16%);
+    --body-color: hsl(0, 0%, 0%);          /* Pure black */
+    --container-color: hsl(0, 0%, 0%);     /* Also pure black for containers */
+}
+
+
+:root {
+    --first-color-second: hsl(var(--hue-color), 3%, 85%);
+    --title-color: hsl(var(--hue-color), 4%, 10%);
+    --text-color: hsl(var(--hue-color), 4%, 15%);
+    --input-color: hsl(var(--hue-color), 2%, 65%);
+    --body-color: hsl(var(--hue-color), 8%, 90%);
+    --container-color: hsl(var(--hue-color), 6%, 80%);
 }
 
 /*========== Button Dark/Light ==========*/
