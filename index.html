@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
     <!--==================== SWIPER CSS ====================-->
     <link rel="stylesheet" href="ASSETS/CSS/swiper-bundle.min.css" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
     <!--==================== CSS ====================-->
     <link rel="stylesheet" href="ASSETS/CSS/style.css" />
     <link rel="icon" href="img/profile-removebg-preview.png" type="image/png" />
@@ -530,14 +532,12 @@
             </div>
         </section>
 
-
-        <!--==================== PORTFOLIO ====================-->
-        <section class="portfolio section" id="projects">
+        <!-- <section class="portfolio section" id="projects">
             <h2 class="section__title">Projects</h2>
             <span class="section__subtitle">Most recent work</span>
             <div class="portfolio__container container swiper mySwiper">
                 <div class="swiper-wrapper">
-                    <!--==================== PORTFOLIO 1 ====================-->
+                   
                     <div class="portfolio__content grid swiper-slide">
                         <img src="img/book-my-bus.png" alt="Book My Bus" class="portfolio__img" style="
                                     width: 100%;
@@ -577,7 +577,7 @@
                         </div>
                     </div>
 
-                    <!--==================== PORTFOLIO 1 ====================-->
+                    
                     <div class="portfolio__content grid swiper-slide">
                         <img src="img/Online-Car-Reservation-System.png" alt="Wheel Estate Car Rental System"
                             class="portfolio__img" style="
@@ -618,7 +618,7 @@
                         </div>
                     </div>
 
-                    <!--==================== PORTFOLIO 1 ====================-->
+                  
                     <div class="portfolio__content grid swiper-slide">
                         <img src="img/Asos.jpg" alt="ASOS" class="portfolio__img" style="
                                     width: 100%;
@@ -655,7 +655,7 @@
                             </a>
                         </div>
                     </div>
-                    <!--==================== PORTFOLIO 2 ====================-->
+                    
                     <div class="portfolio__content grid swiper-slide">
                         <img src="img/Sanke and apples.png" alt="" class="portfolio__img" style="
                                     width: 100%;
@@ -693,7 +693,9 @@
                             </a>
                         </div>
                     </div>
-                    <!--==================== PORTFOLIO 3 ====================-->
+                   
+
+
                     <div class="portfolio__content grid swiper-slide">
                         <img style="" src="img/Fusion wear.png" alt="" class="portfolio__img" style="
                                     width: 100%;
@@ -727,7 +729,9 @@
                             </a>
                         </div>
                     </div>
-                    <!--==================== PORTFOLIO 4  ====================-->
+                    
+
+
                     <div class="portfolio__content grid swiper-slide">
                         <img src="img/ebasket.png" alt="" class="portfolio__img" />
                         <div class="portfolio__data">
@@ -761,7 +765,9 @@
                             </a>
                         </div>
                     </div>
-                    <!--==================== PORTFOLIO 5  ====================-->
+                   
+
+
                     <div class="portfolio__content grid swiper-slide">
                         <img src="https://user-images.githubusercontent.com/115605876/246879151-abc5e708-acb8-4fdd-80dd-289cc1d41195.png"
                             alt="" class="portfolio__img" />
@@ -797,9 +803,7 @@
                             </a>
                         </div>
                     </div>
-                    <!--==================== PORTFOLIO 5  ====================-->
-                    <!-- add here -->
-                    <!--==================== PORTFOLIO 5  ====================-->
+                   
                 </div>
                 <div class="swiper-button-next">
                     <i class="uil uil-angle-right-b swiper-portfolio-icon"></i>
@@ -808,6 +812,161 @@
                     <i class="uil uil-angle-left-b swiper-portfolio-icon"></i>
                 </div>
                 <div class="swiper-pagination"></div>
+            </div>
+        </section> -->
+
+        <!--==================== Projects ====================-->
+        <section class="portfolio section" id="projects">
+            <h2 class="section__title">Projects</h2>
+            <span class="section__subtitle">Most recent work</span>
+            <div class="row g-4">
+                <div class="row justify-content-center g-3" style="width: 80%; margin: 0 auto;">
+
+                    <!-- Book My Bus -->
+                    <div class="col-md-4">
+                        <div class="card h-100 bg-dark text-white">
+                            <img src="img/book-my-bus.png" class="card-img-top img-fluid project-img" alt="Book My Bus">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">Book My Bus</h5>
+                                <p class="card-text">🚌🎫 Bus Reservation System Portal: Simplifying travel! Search,
+                                    select, and reserve bus tickets seamlessly.</p>
+                                <p><strong>Tech-Stack:</strong> HTML, CSS, JavaScript, Hibernate, Spring, Spring Boot,
+                                    MySQL</p>
+                                <div class="mt-auto d-flex gap-2">
+                                    <a href="https://ankits-book-my-bus.netlify.app/"
+                                        class="custom-btn btn btn-success mb-2 w-100" target="_blank">Live</a>
+                                    <a href="https://github.com/AnkitDeshpande/Book-My-Bus"
+                                        class="custom-btn btn btn-success mb-2 w-100" target="_blank">Git Repo</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wheel Estate -->
+                    <div class="col-md-4">
+                        <div class="card h-100 bg-dark text-white">
+                            <img src="img/Online-Car-Reservation-System.png" class="card-img-top img-fluid project-img"
+                                alt="Wheel Estate Car Rental System">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">Wheel Estate : Car Rental System</h5>
+                                <p class="card-text">Car Rental System: A user-friendly GitHub repository with vehicle
+                                    inventory management, reservations, secure payments, and a flexible pricing model.
+                                    Join us to improve the car rental experience! 🚗🚀</p>
+                                <p><strong>Tech-Stack:</strong> Java, Hibernate, MySQL</p>
+                                <div class="mt-auto d-flex gap-2">
+                                    <a href="https://drive.google.com/file/d/1P0MRMwtH_fcKRHDzxVMpeUG_jbhINd2I/view?usp=sharing"
+                                        class="custom-btn btn btn-success mb-2 w-100" target="_blank">Video</a>
+                                    <a href="https://github.com/AnkitDeshpande/Wheel-Estate"
+                                        class="custom-btn btn btn-success mb-2 w-100" target="_blank">Git Repo</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Retro Walk -->
+                    <div class="col-md-4">
+                        <div class="card h-100 bg-dark text-white">
+                            <img src="img/Asos.jpg" class="card-img-top img-fluid project-img" alt="Retro Walk">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">Retro Walk</h5>
+                                <p class="card-text">Its online platform works by selecting the best trendy items from a
+                                    variety of brands and grouping them with its products. A Individual project,
+                                    executed in 6 days.</p>
+                                <p><strong>Tech-Stack:</strong> HTML, CSS, JavaScript</p>
+                                <div class="mt-auto d-flex gap-2">
+                                    <a href="https://ankits-retro-walk.netlify.app/"
+                                        class="custom-btn btn btn-success mb-2 w-100" target="_blank">Live</a>
+                                    <a href="https://github.com/AnkitDeshpande/RetroWalk"
+                                        class="custom-btn btn btn-success mb-2 w-100" target="_blank">Git Repo</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Snake and Apple -->
+                    <div class="col-md-4">
+                        <div class="card h-100 bg-dark text-white">
+                            <img src="img/Sanke and apples.png" class="card-img-top img-fluid project-img"
+                                alt="Snake and Apple">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">Snake and Apple</h5>
+                                <p class="card-text">"Snake and Apple" is an engaging and addictive game that brings
+                                    back the nostalgia of classic arcade games. Players control a snake that slithers
+                                    around the screen, hungrily consuming apples to grow longer.</p>
+                                <p><strong>Tech-Stack:</strong> JAVA, Swing UI</p>
+                                <div class="mt-auto d-flex gap-2">
+                                    <a href="#" class="custom-btn btn btn-success mb-2 w-100" target="_blank">Live</a>
+                                    <a href="https://github.com/AnkitDeshpande/Snake-and-Apple"
+                                        class="custom-btn btn btn-success mb-2 w-100" target="_blank">Git Repo</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fusion Wear -->
+                    <div class="col-md-4">
+                        <div class="card h-100 bg-dark text-white">
+                            <img src="img/Fusion wear.png" class="card-img-top img-fluid project-img" alt="Fusion Wear">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">Fusion Wear</h5>
+                                <p class="card-text">An E-commerce website designed to provide a seamless online
+                                    shopping experience for customers and secure payment. User and Admin authentication
+                                    & validation with session uuid.</p>
+                                <p><strong>Tech-Stack:</strong> HTML, CSS, JavaScript</p>
+                                <div class="mt-auto d-flex gap-2">
+                                    <a href="https://ankits-fusion-wear.netlify.app/"
+                                        class="custom-btn btn btn-success mb-2 w-100" target="_blank">Live</a>
+                                    <a href="https://github.com/AnkitDeshpande/Fusion-Wear/tree/main/html"
+                                        class="custom-btn btn btn-success mb-2 w-100" target="_blank">Git Repo</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- E-Basket -->
+                    <div class="col-md-4">
+                        <div class="card h-100 bg-dark text-white">
+                            <img src="img/ebasket.png" class="card-img-top img-fluid project-img"
+                                alt="E-Basket (Ebay Clone)">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">E-Basket (Ebay Clone)</h5>
+                                <p class="card-text">Ebay.com is known for its unparalleled assortment of apparel and
+                                    accessories from leading fashion brands. A collaborative project built by a team of
+                                    5, executed in 6 days.</p>
+                                <p><strong>Tech-Stack:</strong> HTML, CSS, JavaScript</p>
+                                <div class="mt-auto d-flex gap-2">
+                                    <a href="https://stellar-faloodeh-015224.netlify.app/"
+                                        class="custom-btn btn btn-success mb-2 w-100" target="_blank">Live</a>
+                                    <a href="https://github.com/Abhishek47619/E-Basket"
+                                        class="custom-btn btn btn-success mb-2 w-100" target="_blank">Git Repo</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SkyWay Finder -->
+                    <div class="col-md-4">
+                        <div class="card h-100 bg-dark text-white">
+                            <img src="https://user-images.githubusercontent.com/115605876/246879151-abc5e708-acb8-4fdd-80dd-289cc1d41195.png"
+                                class="card-img-top img-fluid project-img" alt="SkyWay Finder : Flight Booking System">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">SkyWay Finder : Flight Booking System</h5>
+                                <p class="card-text">The Flight Booking System is a Java-based software solution
+                                    designed to simplify the process of booking flights for travelers. It provides a
+                                    console-based interface for users to search for available flights, compare prices,
+                                    and make reservations.</p>
+                                <p><strong>Tech-Stack:</strong> Java, MySQL, Hibernate</p>
+                                <div class="mt-auto d-flex gap-2">
+                                    <a href="https://drive.google.com/file/d/1rdKeaSh5QtqyK9Afdbee9NrSt29Xv0EH/view?usp=sharing"
+                                        class="custom-btn btn btn-success mb-2 w-100" target="_blank">Video</a>
+                                    <a href="https://github.com/AnkitDeshpande/SkyWay-Finder"
+                                        class="custom-btn btn btn-success mb-2 w-100" target="_blank">Git Repo</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </section>
 
@@ -899,6 +1058,8 @@
     <!--==================== MAIN JS ====================-->
     <script src="ASSETS/JS/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <!-- Bootstrap JS (with Popper for dropdowns, tooltips, etc.) -->
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         var typed = new Typed(".auto-input", {
             strings: [

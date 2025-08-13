@@ -84,8 +84,10 @@ body.dark-theme {
     --title-color: hsl(var(--hue-color), 4%, 79%);
     --text-color: hsl(var(--hue-color), 4%, 75%);
     --input-color: hsl(var(--hue-color), 2%, 16%);
-    --body-color: hsl(0, 0%, 0%);          /* Pure black */
-    --container-color: hsl(0, 0%, 0%);     /* Also pure black for containers */
+    --body-color: hsl(0, 0%, 0%);
+    /* Pure black */
+    --container-color: hsl(0, 0%, 0%);
+    /* Also pure black for containers */
 }
 
 
@@ -659,6 +661,24 @@ img {
 }
 
 /*==================== PORTFOLIO ====================*/
+
+/* .container {
+    margin-left: 10rem;
+    margin-right: 10rem;
+} */
+
+.custom-btn {
+    background-color: #87CB43;
+    color: white;
+    border: none;
+}
+
+.project-img {
+    height: 200px;
+    /* Fixed height for all images */
+    object-fit: cover;
+    /* Crop without stretching */
+}
 
 .portfolio__container {
     overflow: initial;
