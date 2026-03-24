@@ -2,10 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, Trophy, Target, Zap } from "lucide-react";
 import clsx from "clsx";
-
-interface Props {
-  isDark: boolean;
-}
+import { useThemeContext } from "../context/ThemeContext";
 
 interface LeetcodeStats {
   totalSolved: number;
@@ -52,25 +49,15 @@ function buildCalendarGrid(calendar: Record<string, number>) {
 
 function cellColor(count: number, isDark: boolean): string {
   if (count === 0) return isDark ? "#1e293b" : "#f1f5f9";
-  if (count === 1) return "#fde68a"; // yellow-200
-  if (count <= 3) return "#fbbf24"; // yellow-400
-  if (count <= 6) return "#f59e0b"; // yellow-500
-  return "#d97706"; // yellow-600
+  if (count === 1) return "#fde68a";
+  if (count <= 3) return "#fbbf24";
+  if (count <= 6) return "#f59e0b";
+  return "#d97706";
 }
 
 const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ];
 
 const DIFFICULTIES = [
@@ -120,23 +107,10 @@ function CircleProgress({
   const offset = circ * (1 - (total > 0 ? solved / total : 0));
   return (
     <svg width="72" height="72" className="-rotate-90">
-      <circle
-        cx="36"
-        cy="36"
-        r={r}
-        fill="none"
-        stroke="#334155"
-        strokeWidth="5"
-      />
+      <circle cx="36" cy="36" r={r} fill="none" stroke="#334155" strokeWidth="5" />
       <motion.circle
-        cx="36"
-        cy="36"
-        r={r}
-        fill="none"
-        stroke={stroke}
-        strokeWidth="5"
-        strokeLinecap="round"
-        strokeDasharray={circ}
+        cx="36" cy="36" r={r} fill="none" stroke={stroke} strokeWidth="5"
+        strokeLinecap="round" strokeDasharray={circ}
         initial={{ strokeDashoffset: circ }}
         whileInView={{ strokeDashoffset: offset }}
         viewport={{ once: true }}
@@ -146,18 +120,27 @@ function CircleProgress({
   );
 }
 
-export default function Leetcode({ isDark }: Props) {
+export default function Leetcode() {
+  const { isDark } = useThemeContext();
   const [stats, setStats] = useState<LeetcodeStats | null>(null);
   const [statsLoading, setStatsLoading] = useState(true);
   const [statsError, setStatsError] = useState(false);
-  const [tooltip, setTooltip] = useState<{
-    text: string;
-    x: number;
-    y: number;
-  } | null>(null);
+  const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
 
   useEffect(() => {
     const primary = fetch(
+      "https://leetcode-stats.tashif.codes/ankitdeshpande",
+    )
+      .then((r) => {
+        if (!r.ok) throw new Error();
+        return r.json();
+      })
+      .then((d) => {
+        if (d.status !== "success") throw new Error();
+        return d as LeetcodeStats;
+      });
+
+    const fallback = fetch(
       "https://leetcode-stats-api.herokuapp.com/Ankitdeshpande",
     )
       .then((r) => {
@@ -166,35 +149,14 @@ export default function Leetcode({ isDark }: Props) {
       })
       .then((d) => {
         if (d.status === "error") throw new Error();
-        return d as LeetcodeStats;
+        return {
+          ...d,
+          submissionCalendar:
+            typeof d.submissionCalendar === "string"
+              ? JSON.parse(d.submissionCalendar)
+              : (d.submissionCalendar ?? {}),
+        } as LeetcodeStats;
       });
-
-    const fallback = fetch(
-      "https://alfa-leetcode-api.onrender.com/userProfile/Ankitdeshpande",
-    )
-      .then((r) => {
-        if (!r.ok) throw new Error();
-        return r.json();
-      })
-      .then(
-        (d) =>
-          ({
-            totalSolved: d.totalSolved ?? 0,
-            totalQuestions: d.totalQuestions ?? 0,
-            easySolved: d.easySolved ?? 0,
-            totalEasy: d.totalEasy ?? 0,
-            mediumSolved: d.mediumSolved ?? 0,
-            totalMedium: d.totalMedium ?? 0,
-            hardSolved: d.hardSolved ?? 0,
-            totalHard: d.totalHard ?? 0,
-            acceptanceRate: d.acceptanceRate ?? 0,
-            ranking: d.ranking ?? 0,
-            submissionCalendar:
-              typeof d.submissionCalendar === "string"
-                ? JSON.parse(d.submissionCalendar)
-                : (d.submissionCalendar ?? {}),
-          }) as LeetcodeStats,
-      );
 
     primary
       .catch(() => fallback)
@@ -219,7 +181,7 @@ export default function Leetcode({ isDark }: Props) {
     : 0;
 
   return (
-    <section className={clsx("py-20", isDark ? "bg-slate-900" : "bg-white")}>
+    <section id="leetcode" className={clsx("py-20", isDark ? "bg-slate-900" : "bg-white")}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -229,20 +191,10 @@ export default function Leetcode({ isDark }: Props) {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2
-            className={clsx(
-              "text-3xl sm:text-4xl font-bold mb-2",
-              isDark ? "text-white" : "text-slate-900",
-            )}
-          >
+          <h2 className={clsx("text-3xl sm:text-4xl font-bold mb-2", isDark ? "text-white" : "text-slate-900")}>
             Leet<span className="gradient-text">Code</span>
           </h2>
-          <span
-            className={clsx(
-              "text-sm",
-              isDark ? "text-emerald-400" : "text-emerald-600",
-            )}
-          >
+          <span className={clsx("text-sm", isDark ? "text-emerald-400" : "text-emerald-600")}>
             Problem solving stats
           </span>
         </motion.div>
@@ -254,12 +206,7 @@ export default function Leetcode({ isDark }: Props) {
         )}
 
         {statsError && !stats && (
-          <p
-            className={clsx(
-              "text-center",
-              isDark ? "text-slate-400" : "text-slate-500",
-            )}
-          >
+          <p className={clsx("text-center", isDark ? "text-slate-400" : "text-slate-500")}>
             Could not load stats.{" "}
             <a
               href="https://leetcode.com/u/Ankitdeshpande/"
@@ -280,86 +227,41 @@ export default function Leetcode({ isDark }: Props) {
             transition={{ duration: 0.6 }}
             className={clsx(
               "rounded-2xl border p-6 sm:p-8 space-y-8",
-              isDark
-                ? "border-slate-700 bg-slate-800"
-                : "border-slate-200 bg-slate-50",
+              isDark ? "border-slate-700 bg-slate-800" : "border-slate-200 bg-slate-50",
             )}
           >
-            {/* ── Stats row ── */}
             {stats && (
               <>
+                {/* ── Top row: donut + quick stats ── */}
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-700/40">
                   {/* Donut */}
                   <div className="flex items-center gap-5">
                     <div className="relative w-24 h-24">
-                      <svg
-                        width="96"
-                        height="96"
-                        className="-rotate-90 absolute inset-0"
-                      >
-                        <circle
-                          cx="48"
-                          cy="48"
-                          r="38"
-                          fill="none"
-                          stroke="#334155"
-                          strokeWidth="6"
-                        />
+                      <svg width="96" height="96" className="-rotate-90 absolute inset-0">
+                        <circle cx="48" cy="48" r="38" fill="none" stroke="#334155" strokeWidth="6" />
                         <motion.circle
-                          cx="48"
-                          cy="48"
-                          r="38"
-                          fill="none"
-                          stroke="#10b981"
-                          strokeWidth="6"
-                          strokeLinecap="round"
-                          strokeDasharray={2 * Math.PI * 38}
+                          cx="48" cy="48" r="38" fill="none" stroke="#10b981" strokeWidth="6"
+                          strokeLinecap="round" strokeDasharray={2 * Math.PI * 38}
                           initial={{ strokeDashoffset: 2 * Math.PI * 38 }}
-                          whileInView={{
-                            strokeDashoffset:
-                              2 *
-                              Math.PI *
-                              38 *
-                              (1 - stats.totalSolved / stats.totalQuestions),
-                          }}
+                          whileInView={{ strokeDashoffset: 2 * Math.PI * 38 * (1 - stats.totalSolved / stats.totalQuestions) }}
                           viewport={{ once: true }}
                           transition={{ duration: 1.4, ease: "easeOut" }}
                         />
                       </svg>
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span
-                          className={clsx(
-                            "text-xl font-bold",
-                            isDark ? "text-white" : "text-slate-900",
-                          )}
-                        >
+                        <span className={clsx("text-xl font-bold", isDark ? "text-white" : "text-slate-900")}>
                           {stats.totalSolved}
                         </span>
-                        <span
-                          className={clsx(
-                            "text-[10px]",
-                            isDark ? "text-slate-400" : "text-slate-500",
-                          )}
-                        >
+                        <span className={clsx("text-[10px]", isDark ? "text-slate-400" : "text-slate-500")}>
                           / {stats.totalQuestions}
                         </span>
                       </div>
                     </div>
                     <div>
-                      <p
-                        className={clsx(
-                          "text-lg font-bold",
-                          isDark ? "text-white" : "text-slate-900",
-                        )}
-                      >
+                      <p className={clsx("text-lg font-bold", isDark ? "text-white" : "text-slate-900")}>
                         Problems Solved
                       </p>
-                      <p
-                        className={clsx(
-                          "text-sm",
-                          isDark ? "text-slate-400" : "text-slate-500",
-                        )}
-                      >
+                      <p className={clsx("text-sm", isDark ? "text-slate-400" : "text-slate-500")}>
                         out of {stats.totalQuestions} total
                       </p>
                     </div>
@@ -368,46 +270,14 @@ export default function Leetcode({ isDark }: Props) {
                   {/* Quick stats */}
                   <div className="flex gap-6">
                     {[
-                      {
-                        icon: Trophy,
-                        value: `#${stats.ranking.toLocaleString()}`,
-                        label: "Ranking",
-                        color: "text-yellow-400",
-                      },
-                      {
-                        icon: Target,
-                        value: `${stats.acceptanceRate.toFixed(1)}%`,
-                        label: "Acceptance",
-                        color: "text-emerald-400",
-                      },
-                      {
-                        icon: Zap,
-                        value: `${stats.totalSolved}`,
-                        label: "Solved",
-                        color: "text-cyan-400",
-                      },
+                      { icon: Trophy, value: `#${stats.ranking.toLocaleString()}`, label: "Ranking",    color: "text-yellow-400" },
+                      { icon: Target, value: `${stats.acceptanceRate.toFixed(1)}%`, label: "Acceptance", color: "text-emerald-400" },
+                      { icon: Zap,    value: `${stats.totalSolved}`,                label: "Solved",     color: "text-cyan-400" },
                     ].map(({ icon: Icon, value, label, color }) => (
-                      <div
-                        key={label}
-                        className="flex flex-col items-center gap-1"
-                      >
+                      <div key={label} className="flex flex-col items-center gap-1">
                         <Icon size={18} className={color} />
-                        <span
-                          className={clsx(
-                            "text-lg font-bold",
-                            isDark ? "text-white" : "text-slate-900",
-                          )}
-                        >
-                          {value}
-                        </span>
-                        <span
-                          className={clsx(
-                            "text-xs",
-                            isDark ? "text-slate-400" : "text-slate-500",
-                          )}
-                        >
-                          {label}
-                        </span>
+                        <span className={clsx("text-lg font-bold", isDark ? "text-white" : "text-slate-900")}>{value}</span>
+                        <span className={clsx("text-xs", isDark ? "text-slate-400" : "text-slate-500")}>{label}</span>
                       </div>
                     ))}
                   </div>
@@ -415,66 +285,33 @@ export default function Leetcode({ isDark }: Props) {
 
                 {/* Difficulty circles */}
                 <div className="grid grid-cols-3 gap-4">
-                  {DIFFICULTIES.map(
-                    ({
-                      key,
-                      label,
-                      color,
-                      stroke,
-                      bg,
-                      track,
-                      solved,
-                      total,
-                    }) => {
-                      const s = solved(stats);
-                      const t = total(stats);
-                      return (
-                        <div
-                          key={key}
-                          className="flex flex-col items-center gap-3"
-                        >
-                          <div className="relative">
-                            <CircleProgress
-                              solved={s}
-                              total={t}
-                              stroke={stroke}
-                            />
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <span
-                                className={clsx("text-sm font-bold", color)}
-                              >
-                                {s}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="text-center">
-                            <p className={clsx("text-xs font-semibold", color)}>
-                              {label}
-                            </p>
-                            <p
-                              className={clsx(
-                                "text-xs",
-                                isDark ? "text-slate-500" : "text-slate-400",
-                              )}
-                            >
-                              {s} / {t}
-                            </p>
-                          </div>
-                          <div
-                            className={clsx("w-full h-1.5 rounded-full", track)}
-                          >
-                            <motion.div
-                              className={clsx("h-full rounded-full", bg)}
-                              initial={{ width: 0 }}
-                              whileInView={{ width: `${(s / t) * 100}%` }}
-                              viewport={{ once: true }}
-                              transition={{ duration: 1.2, ease: "easeOut" }}
-                            />
+                  {DIFFICULTIES.map(({ key, label, color, stroke, bg, track, solved, total }) => {
+                    const s = solved(stats);
+                    const t = total(stats);
+                    return (
+                      <div key={key} className="flex flex-col items-center gap-3">
+                        <div className="relative">
+                          <CircleProgress solved={s} total={t} stroke={stroke} />
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className={clsx("text-sm font-bold", color)}>{s}</span>
                           </div>
                         </div>
-                      );
-                    },
-                  )}
+                        <div className="text-center">
+                          <p className={clsx("text-xs font-semibold", color)}>{label}</p>
+                          <p className={clsx("text-xs", isDark ? "text-slate-500" : "text-slate-400")}>{s} / {t}</p>
+                        </div>
+                        <div className={clsx("w-full h-1.5 rounded-full", track)}>
+                          <motion.div
+                            className={clsx("h-full rounded-full", bg)}
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${(s / t) * 100}%` }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 1.2, ease: "easeOut" }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </>
             )}
@@ -483,47 +320,24 @@ export default function Leetcode({ isDark }: Props) {
             {calendar && weeks.length > 0 && (
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <p
-                    className={clsx(
-                      "text-sm font-semibold",
-                      isDark ? "text-slate-300" : "text-slate-700",
-                    )}
-                  >
+                  <p className={clsx("text-sm font-semibold", isDark ? "text-slate-300" : "text-slate-700")}>
                     Submission Activity
                   </p>
-                  <p
-                    className={clsx(
-                      "text-xs",
-                      isDark ? "text-slate-500" : "text-slate-400",
-                    )}
-                  >
-                    {totalSubmissions.toLocaleString()} submissions in the last
-                    year
+                  <p className={clsx("text-xs", isDark ? "text-slate-500" : "text-slate-400")}>
+                    {totalSubmissions.toLocaleString()} submissions in the last year
                   </p>
                 </div>
 
                 <div className="overflow-x-auto">
-                  <div
-                    className="relative"
-                    style={{ minWidth: `${weeks.length * 13}px` }}
-                  >
+                  <div className="relative" style={{ minWidth: `${weeks.length * 13}px` }}>
                     {/* Month labels */}
                     <div className="flex mb-1" style={{ paddingLeft: "18px" }}>
                       {weeks.map((_, col) => {
                         const lbl = monthLabels.find((m) => m.col === col);
                         return (
-                          <div
-                            key={col}
-                            style={{ width: 11, marginRight: 2 }}
-                            className="flex-shrink-0"
-                          >
+                          <div key={col} style={{ width: 11, marginRight: 2 }} className="flex-shrink-0">
                             {lbl && (
-                              <span
-                                className={clsx(
-                                  "text-[9px]",
-                                  isDark ? "text-slate-500" : "text-slate-400",
-                                )}
-                              >
+                              <span className={clsx("text-[9px]", isDark ? "text-slate-500" : "text-slate-400")}>
                                 {lbl.label}
                               </span>
                             )}
@@ -532,7 +346,6 @@ export default function Leetcode({ isDark }: Props) {
                       })}
                     </div>
 
-                    {/* Grid */}
                     <div className="flex gap-[2px]">
                       {/* Day labels */}
                       <div className="flex flex-col gap-[2px] mr-1 flex-shrink-0">
@@ -540,10 +353,7 @@ export default function Leetcode({ isDark }: Props) {
                           <div
                             key={i}
                             style={{ height: 11 }}
-                            className={clsx(
-                              "text-[9px] leading-none",
-                              isDark ? "text-slate-500" : "text-slate-400",
-                            )}
+                            className={clsx("text-[9px] leading-none", isDark ? "text-slate-500" : "text-slate-400")}
                           >
                             {d}
                           </div>
@@ -557,16 +367,12 @@ export default function Leetcode({ isDark }: Props) {
                             <div
                               key={di}
                               style={{
-                                width: 11,
-                                height: 11,
-                                borderRadius: 2,
+                                width: 11, height: 11, borderRadius: 2,
                                 backgroundColor: cellColor(day.count, isDark),
                                 flexShrink: 0,
                               }}
                               onMouseEnter={(e) => {
-                                const rect = (
-                                  e.target as HTMLElement
-                                ).getBoundingClientRect();
+                                const rect = (e.target as HTMLElement).getBoundingClientRect();
                                 setTooltip({
                                   text: `${day.count} submission${day.count !== 1 ? "s" : ""} on ${day.date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`,
                                   x: rect.left + rect.width / 2,
@@ -584,33 +390,11 @@ export default function Leetcode({ isDark }: Props) {
 
                 {/* Legend */}
                 <div className="flex items-center gap-2 mt-3 justify-end">
-                  <span
-                    className={clsx(
-                      "text-[10px]",
-                      isDark ? "text-slate-500" : "text-slate-400",
-                    )}
-                  >
-                    Less
-                  </span>
+                  <span className={clsx("text-[10px]", isDark ? "text-slate-500" : "text-slate-400")}>Less</span>
                   {[0, 1, 3, 5, 7].map((v) => (
-                    <div
-                      key={v}
-                      style={{
-                        width: 11,
-                        height: 11,
-                        borderRadius: 2,
-                        backgroundColor: cellColor(v, isDark),
-                      }}
-                    />
+                    <div key={v} style={{ width: 11, height: 11, borderRadius: 2, backgroundColor: cellColor(v, isDark) }} />
                   ))}
-                  <span
-                    className={clsx(
-                      "text-[10px]",
-                      isDark ? "text-slate-500" : "text-slate-400",
-                    )}
-                  >
-                    More
-                  </span>
+                  <span className={clsx("text-[10px]", isDark ? "text-slate-500" : "text-slate-400")}>More</span>
                 </div>
               </div>
             )}

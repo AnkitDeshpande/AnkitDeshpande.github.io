@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
 import GitHubCalendar from "react-github-calendar";
 import clsx from "clsx";
+import { useThemeContext } from "../context/ThemeContext";
 
-interface Props {
-  isDark: boolean;
-}
+export default function Github() {
+  const { isDark } = useThemeContext();
 
-export default function Github({ isDark }: Props) {
   return (
     <section
+      id="github"
       className={clsx("py-20", isDark ? "bg-slate-800/50" : "bg-slate-50")}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -50,16 +50,19 @@ export default function Github({ isDark }: Props) {
             src="https://github-readme-stats.vercel.app/api/top-langs/?username=ankitdeshpande&theme=vue-dark&show_icons=true&hide_border=true&layout=compact"
             alt="Top Languages"
             className="rounded-xl"
+            loading="lazy"
           />
           <img
             src="https://github-readme-streak-stats.herokuapp.com/?user=ankitdeshpande&theme=vue-dark&hide_border=true"
             alt="GitHub Streak"
             className="rounded-xl"
+            loading="lazy"
           />
           <img
             src="https://github-readme-stats.vercel.app/api?username=ankitdeshpande&theme=vue-dark&show_icons=true&hide_border=true&count_private=true"
             alt="GitHub Stats"
             className="rounded-xl"
+            loading="lazy"
           />
         </motion.div>
 

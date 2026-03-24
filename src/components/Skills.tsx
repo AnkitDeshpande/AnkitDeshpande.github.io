@@ -10,6 +10,7 @@ import {
   techStackRow4,
   techStackRow5,
 } from "../data/skills";
+import { useThemeContext } from "../context/ThemeContext";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Code2,
@@ -17,10 +18,6 @@ const ICON_MAP: Record<string, React.ElementType> = {
   Users,
   BookOpen,
 };
-
-interface Props {
-  isDark: boolean;
-}
 
 function SkillBar({
   name,
@@ -89,6 +86,7 @@ function TechStackRow({
             src={item.src}
             alt={item.alt}
             className="w-10 h-10 object-contain"
+            loading="lazy"
           />
           <span
             className={clsx(
@@ -104,7 +102,8 @@ function TechStackRow({
   );
 }
 
-export default function Skills({ isDark }: Props) {
+export default function Skills() {
+  const { isDark } = useThemeContext();
   const [openGroup, setOpenGroup] = useState<string>("frontend");
   const sectionRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);

@@ -1,10 +1,7 @@
 import { motion } from "framer-motion";
 import { Download, Briefcase, FolderOpen, Building2 } from "lucide-react";
 import clsx from "clsx";
-
-interface Props {
-  isDark: boolean;
-}
+import { useThemeContext } from "../context/ThemeContext";
 
 const stats = [
   { icon: Briefcase, value: "2+", label: "Years\nExperience" },
@@ -12,7 +9,9 @@ const stats = [
   { icon: Building2, value: "2", label: "Companies\nWorked" },
 ];
 
-export default function About({ isDark }: Props) {
+export default function About() {
+  const { isDark } = useThemeContext();
+
   return (
     <section
       id="about"

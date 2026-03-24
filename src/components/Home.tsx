@@ -2,15 +2,11 @@ import { TypeAnimation } from "react-type-animation";
 import { motion } from "framer-motion";
 import { Linkedin, Github, ArrowDown, Mail } from "lucide-react";
 import clsx from "clsx";
+import { useThemeContext } from "../context/ThemeContext";
+import { scrollToSection } from "../utils/scroll";
 
-interface Props {
-  isDark: boolean;
-}
-
-export default function Home({ isDark }: Props) {
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
+export default function Home() {
+  const { isDark } = useThemeContext();
 
   return (
     <section
@@ -109,7 +105,7 @@ export default function Home({ isDark }: Props) {
 
             <div className="flex flex-wrap gap-4 justify-center md:justify-start">
               <button
-                onClick={() => scrollTo("contact")}
+                onClick={() => scrollToSection("contact")}
                 className="flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-medium transition-all duration-200 shadow-lg shadow-emerald-500/25"
               >
                 <Mail size={16} />
@@ -158,7 +154,7 @@ export default function Home({ isDark }: Props) {
           transition={{ delay: 0.8, duration: 0.5 }}
         >
           <button
-            onClick={() => scrollTo("about")}
+            onClick={() => scrollToSection("about")}
             className={clsx(
               "flex flex-col items-center gap-2 text-sm transition-all duration-200 animate-bounce",
               isDark

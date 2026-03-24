@@ -1,11 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Phone, Mail, Linkedin, Github, Send } from "lucide-react";
+import { Phone, Mail, Linkedin, Github, Send, CheckCircle } from "lucide-react";
 import clsx from "clsx";
-
-interface Props {
-  isDark: boolean;
-}
+import { useThemeContext } from "../context/ThemeContext";
 
 const contactInfo = [
   {
@@ -34,19 +31,49 @@ const contactInfo = [
   },
 ];
 
-export default function Contact({ isDark }: Props) {
+export default function Contact() {
+  const { isDark } = useThemeContext();
   const [formState, setFormState] = useState({
     name: "",
     email: "",
     subject: "",
     message: "",
   });
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
+    if (status === "error") setStatus("idle");
     setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("sending");
+    try {
+      const res = await fetch("https://formsubmit.co/ajax/ankitdeshpande1998@gmail.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(formState),
+      });
+      if (res.ok) {
+        setStatus("success");
+        setFormState({ name: "", email: "", subject: "", message: "" });
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  const inputClass = clsx(
+    "w-full px-4 py-2.5 rounded-xl border text-sm outline-none transition-all duration-200",
+    isDark
+      ? "border-slate-700 bg-slate-800 text-white placeholder:text-slate-500 focus:border-emerald-500"
+      : "border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:border-emerald-500",
+  );
 
   return (
     <section
@@ -134,12 +161,7 @@ export default function Contact({ isDark }: Props) {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <form
-              action="https://formsubmit.co/ankitdeshpande1998@gmail.com"
-              method="POST"
-              target="_blank"
-              className="space-y-4"
-            >
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label
@@ -157,12 +179,7 @@ export default function Contact({ isDark }: Props) {
                     onChange={handleChange}
                     placeholder="Your name"
                     required
-                    className={clsx(
-                      "w-full px-4 py-2.5 rounded-xl border text-sm outline-none transition-all duration-200",
-                      isDark
-                        ? "border-slate-700 bg-slate-800 text-white placeholder:text-slate-500 focus:border-emerald-500"
-                        : "border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:border-emerald-500",
-                    )}
+                    className={inputClass}
                   />
                 </div>
                 <div>
@@ -181,12 +198,7 @@ export default function Contact({ isDark }: Props) {
                     onChange={handleChange}
                     placeholder="your@email.com"
                     required
-                    className={clsx(
-                      "w-full px-4 py-2.5 rounded-xl border text-sm outline-none transition-all duration-200",
-                      isDark
-                        ? "border-slate-700 bg-slate-800 text-white placeholder:text-slate-500 focus:border-emerald-500"
-                        : "border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:border-emerald-500",
-                    )}
+                    className={inputClass}
                   />
                 </div>
               </div>
@@ -206,12 +218,7 @@ export default function Contact({ isDark }: Props) {
                   onChange={handleChange}
                   placeholder="Subject"
                   required
-                  className={clsx(
-                    "w-full px-4 py-2.5 rounded-xl border text-sm outline-none transition-all duration-200",
-                    isDark
-                      ? "border-slate-700 bg-slate-800 text-white placeholder:text-slate-500 focus:border-emerald-500"
-                      : "border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:border-emerald-500",
-                  )}
+                  className={inputClass}
                 />
               </div>
               <div>
@@ -230,21 +237,31 @@ export default function Contact({ isDark }: Props) {
                   placeholder="Write your message..."
                   required
                   rows={5}
-                  className={clsx(
-                    "w-full px-4 py-2.5 rounded-xl border text-sm outline-none transition-all duration-200 resize-none",
-                    isDark
-                      ? "border-slate-700 bg-slate-800 text-white placeholder:text-slate-500 focus:border-emerald-500"
-                      : "border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:border-emerald-500",
-                  )}
+                  className={clsx(inputClass, "resize-none")}
                 />
               </div>
-              <button
-                type="submit"
-                className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-medium transition-all duration-200 shadow-lg shadow-emerald-500/25"
-              >
-                <Send size={16} />
-                Send Message
-              </button>
+              {status === "success" ? (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center gap-3 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30"
+                >
+                  <CheckCircle size={20} className="text-emerald-400 shrink-0" />
+                  <p className="text-sm text-emerald-400 font-medium">Message sent! I'll get back to you soon.</p>
+                </motion.div>
+              ) : (
+                <button
+                  type="submit"
+                  disabled={status === "sending"}
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium transition-all duration-200 shadow-lg shadow-emerald-500/25"
+                >
+                  <Send size={16} />
+                  {status === "sending" ? "Sending..." : "Send Message"}
+                </button>
+              )}
+              {status === "error" && (
+                <p className="text-sm text-red-400 text-center">Something went wrong. Please try again.</p>
+              )}
             </form>
           </motion.div>
         </div>

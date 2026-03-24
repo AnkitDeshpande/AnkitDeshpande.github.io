@@ -12,10 +12,10 @@ import {
 } from "lucide-react";
 import clsx from "clsx";
 import { projects, type Project } from "../data/projects";
+import { useThemeContext } from "../context/ThemeContext";
 
-interface Props {
-  isDark: boolean;
-}
+const FALLBACK_SVG = (w: number, h: number) =>
+  `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="%231e293b"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" font-family="sans-serif" font-size="14" fill="%2364748b">No Image</text></svg>`;
 
 // ─── Shared buttons ───────────────────────────────────────────────────────────
 function ProjectLinks({
@@ -91,9 +91,9 @@ function SpotlightView({ isDark }: { isDark: boolean }) {
                 src={project.image}
                 alt={project.title}
                 className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240"><rect width="400" height="240" fill="%231e293b"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" font-family="sans-serif" font-size="14" fill="%2364748b">No Image</text></svg>';
+                  (e.target as HTMLImageElement).src = FALLBACK_SVG(400, 240);
                 }}
               />
               <div
@@ -132,7 +132,7 @@ function SpotlightView({ isDark }: { isDark: boolean }) {
               </p>
               {/* Tech pills */}
               <div className="flex flex-wrap gap-2 mb-5">
-                {project.techStack.split(",").map((t) => (
+                {project.techStack.map((t) => (
                   <span
                     key={t}
                     className={clsx(
@@ -142,7 +142,7 @@ function SpotlightView({ isDark }: { isDark: boolean }) {
                         : "bg-emerald-50 text-emerald-700",
                     )}
                   >
-                    {t.trim()}
+                    {t}
                   </span>
                 ))}
               </div>
@@ -155,7 +155,7 @@ function SpotlightView({ isDark }: { isDark: boolean }) {
   );
 }
 
-// ─── Grid layout (legacy) ─────────────────────────────────────────────────────
+// ─── Grid layout ──────────────────────────────────────────────────────────────
 function GridView({ isDark }: { isDark: boolean }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -179,9 +179,9 @@ function GridView({ isDark }: { isDark: boolean }) {
               src={project.image}
               alt={project.title}
               className="w-full h-full object-contain transition-transform duration-500 hover:scale-105"
+              loading="lazy"
               onError={(e) => {
-                (e.target as HTMLImageElement).src =
-                  'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="176" viewBox="0 0 400 176"><rect width="400" height="176" fill="%231e293b"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" font-family="sans-serif" font-size="14" fill="%2364748b">No Image</text></svg>';
+                (e.target as HTMLImageElement).src = FALLBACK_SVG(400, 176);
               }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
@@ -204,7 +204,7 @@ function GridView({ isDark }: { isDark: boolean }) {
               {project.description}
             </p>
             <div className="flex flex-wrap gap-1.5 mb-4">
-              {project.techStack.split(",").map((t) => (
+              {project.techStack.map((t) => (
                 <span
                   key={t}
                   className={clsx(
@@ -214,7 +214,7 @@ function GridView({ isDark }: { isDark: boolean }) {
                       : "bg-emerald-50 text-emerald-700",
                   )}
                 >
-                  {t.trim()}
+                  {t}
                 </span>
               ))}
             </div>
@@ -283,9 +283,9 @@ function SliderView({ isDark }: { isDark: boolean }) {
               src={project.image}
               alt={project.title}
               className="w-full h-full object-contain bg-slate-900"
+              loading="lazy"
               onError={(e) => {
-                (e.target as HTMLImageElement).src =
-                  'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520"><rect width="800" height="520" fill="%231e293b"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" font-family="sans-serif" font-size="16" fill="%2364748b">No Image</text></svg>';
+                (e.target as HTMLImageElement).src = FALLBACK_SVG(800, 520);
               }}
             />
 
@@ -307,12 +307,12 @@ function SliderView({ isDark }: { isDark: boolean }) {
                 {project.description}
               </p>
               <div className="flex flex-wrap gap-2 mb-5">
-                {project.techStack.split(",").map((t) => (
+                {project.techStack.map((t) => (
                   <span
                     key={t}
                     className="px-2.5 py-1 rounded-full text-xs font-medium bg-white/10 text-emerald-300 backdrop-blur-sm border border-white/10"
                   >
-                    {t.trim()}
+                    {t}
                   </span>
                 ))}
               </div>
@@ -347,7 +347,8 @@ function SliderView({ isDark }: { isDark: boolean }) {
 }
 
 // ─── Main section ─────────────────────────────────────────────────────────────
-export default function Projects({ isDark }: Props) {
+export default function Projects() {
+  const { isDark } = useThemeContext();
   const [layout, setLayout] = useState<"spotlight" | "grid" | "slider">(
     "slider",
   );

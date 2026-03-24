@@ -99,20 +99,6 @@ public/
 
 ---
 
-## Todo
-
-### High Priority
-- [ ] **Contact form** — wire up the message form using [Formspree](https://formspree.io) or EmailJS so messages actually get delivered (free, no backend needed)
-- [ ] **Open Graph meta tags** — add `og:title`, `og:description`, `og:image` to `index.html` so sharing the portfolio link on LinkedIn/WhatsApp shows a proper preview card
-
-### Nice to Have
-- [ ] **Certifications section** — add AWS/Azure or other certifications with badge images and issue dates
-- [ ] **Custom 404 page** — add a `404.html` in `public/` so GitHub Pages shows a branded error page instead of the default GitHub one
-- [ ] **Scroll progress bar** — thin emerald bar at the top of the viewport showing scroll depth
-- [ ] **Persist dark mode** — save the dark/light preference to `localStorage` so it's remembered on refresh
-
----
-
 ## Contact
 
 - **Email:** ankitdeshpande1998@gmail.com

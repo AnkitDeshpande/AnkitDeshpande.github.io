@@ -7,10 +7,7 @@ import {
   educationEntries,
   type QualificationEntry,
 } from "../data/qualification";
-
-interface Props {
-  isDark: boolean;
-}
+import { useThemeContext } from "../context/ThemeContext";
 
 type Tab = "work" | "education";
 
@@ -268,7 +265,8 @@ function RoadTimeline({
 }
 
 // ─── Main section ─────────────────────────────────────────────────────────────
-export default function Qualification({ isDark }: Props) {
+export default function Qualification() {
+  const { isDark } = useThemeContext();
   const [activeTab, setActiveTab] = useState<Tab>("work");
 
   return (

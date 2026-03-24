@@ -17,10 +17,11 @@ html {
 
 body {
   font-family:
-    "Inter",
-    system-ui,
-    -apple-system,
-    sans-serif;
+    "Geist Mono",
+    ui-monospace,
+    "Cascadia Code",
+    "Source Code Pro",
+    monospace;
 }
 
 /* Scrollbar */

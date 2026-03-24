@@ -1,10 +1,9 @@
 import clsx from "clsx";
+import { useThemeContext } from "../context/ThemeContext";
 
-interface Props {
-  isDark: boolean;
-}
+export default function Footer() {
+  const { isDark } = useThemeContext();
 
-export default function Footer({ isDark }: Props) {
   return (
     <footer
       className={clsx(
