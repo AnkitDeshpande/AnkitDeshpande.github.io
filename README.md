@@ -83,7 +83,7 @@ bun run build
 
 ## Deployment
 
-Automatically deployed to GitHub Pages via GitHub Actions on every push to `main`.
+Automatically deployed to GitHub Pages via GitHub Actions on every push to `master` [previously `main`].
 
 To enable: go to repo **Settings → Pages → Source** and select **GitHub Actions**.
 
