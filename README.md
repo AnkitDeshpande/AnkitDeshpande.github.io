@@ -90,5 +90,5 @@ To enable: go to repo **Settings → Pages → Source** and select **GitHub Acti
 ## Contact
 
 - **Email:** ankitdeshpande1998@gmail.com
-- **LinkedIn:** [ankit-deshpande-54089221b](https://www.linkedin.com/in/ankit-deshpande-54089221b/)
+- **LinkedIn:** [ankit-deshpande](https://www.linkedin.com/in/ankit-deshpande/)
 - **GitHub:** [AnkitDeshpande](https://github.com/AnkitDeshpande)
