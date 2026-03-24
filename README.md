@@ -1,57 +1,94 @@
-# Portfolio
+# Ankit Deshpande — Portfolio
 
-Welcome to my portfolio repository! This portfolio showcases my skills, projects, and provides information about me. It serves as a comprehensive overview of my experience and abilities.
+Personal portfolio website built with React, TypeScript, and Tailwind CSS. Showcases my skills, projects, and experience as a Backend Developer.
 
-## Table of Contents
+**Live site:** [ankitdeshpande.github.io](https://ankitdeshpande.github.io)
 
--   [Project Overview](#project-overview)
--   [Features](#features)
--   [Installation](#installation)
--   [Usage](#usage)
--   [Technologies Used](#technologies-used)
--   [Contributing](#contributing)
--   [License](#license)
--   [Contact](#contact)
+## Tech Stack
 
-## Project Overview
+- **React 19** + **TypeScript 5**
+- **Vite 6** — build tool
+- **Tailwind CSS v4** — styling
+- **Framer Motion** — animations
+- **react-type-animation** — typewriter effect
+- **react-github-calendar** — GitHub contribution graph
+- **lucide-react** — icons
 
-This portfolio website serves as a central hub for showcasing my work and introducing myself to potential clients, employers, or collaborators. It provides sections such as an About Me page, Skills, Projects, and Contact Information.
+## Sections
 
-## Features
+- **Home** — Hero with typewriter animation and social links
+- **About** — Introduction, stats, and resume download
+- **Skills** — Accordion skill groups with animated progress bars + tech stack grid
+- **GitHub Activity** — Stats cards and contribution calendar
+- **Qualification** — Work and education timeline
+- **Projects** — Card grid of notable projects
+- **Contact** — Contact info and message form
 
--   Home section with a brief introduction and navigation menu.
--   About section highlighting my background, experience, and interests.
--   Skills section showcasing my technical skills and expertise.
--   Projects section displaying a selection of my notable projects.
--   Contact section with a form to get in touch with me.
--   Responsive design for optimal viewing on different devices.
+## Getting Started
 
-## Installation
+### 1. Clone the repository
 
-1. Clone the repository: `git clone https://github.com/ankitdeshpande/AnkitDeshapnde.github.io`
-2. Navigate to the project directory: `cd AnkitDeshapnde.github.io`
+```bash
+git clone https://github.com/AnkitDeshpande/AnkitDeshpande.github.io.git
+cd AnkitDeshpande.github.io
+```
 
-## Usage
+### 2. Install dependencies
 
-1. Open the `index.html` file in a web browser.
-2. Explore the different sections of the portfolio by clicking on the navigation links.
-3. View the projects and click on them to learn more and see their details.
-4. Use the contact form to send me a message or get in touch.
+```bash
+# npm
+npm install
 
-## Technologies Used
+# yarn
+yarn
 
--   HTML
--   CSS
--   JavaScript
+# pnpm
+pnpm install
 
-## Contributing
+# bun
+bun install
+```
 
-Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to open an issue or submit a pull request.
+### 3. Start the dev server
+
+```bash
+# npm
+npm run dev
+
+# yarn
+yarn dev
+
+# pnpm
+pnpm dev
+
+# bun
+bun run dev
+```
+
+### 4. Build for production
+
+```bash
+# npm
+npm run build
+
+# yarn
+yarn build
+
+# pnpm
+pnpm build
+
+# bun
+bun run build
+```
+
+## Deployment
+
+Automatically deployed to GitHub Pages via GitHub Actions on every push to `main`.
+
+To enable: go to repo **Settings → Pages → Source** and select **GitHub Actions**.
 
 ## Contact
 
-If you have any questions, inquiries, or opportunities, feel free to reach out to me.
-
--   Name: Ankit Deshpande
--   Email: urstrulyankit@protonmail.com
--   Portfolio: AnkitDeshapnde.github.io
+- **Email:** ankitdeshpande1998@gmail.com
+- **LinkedIn:** [ankit-deshpande-54089221b](https://www.linkedin.com/in/ankit-deshpande-54089221b/)
+- **GitHub:** [AnkitDeshpande](https://github.com/AnkitDeshpande)
