@@ -8,7 +8,7 @@ interface Props {
 
 const stats = [
   { icon: Briefcase, value: "2+", label: "Years\nExperience" },
-  { icon: FolderOpen, value: "6+", label: "Completed\nProjects" },
+  { icon: FolderOpen, value: "9+", label: "Completed\nProjects" },
   { icon: Building2, value: "2", label: "Companies\nWorked" },
 ];
 
@@ -106,11 +106,19 @@ export default function About({ isDark }: Props) {
                 isDark ? "text-slate-300" : "text-slate-600",
               )}
             >
-              Dedicated and detail-oriented developer with over{" "}
-              <span className="text-emerald-400 font-medium">1200+ hours</span>{" "}
-              of coding experience. Capable of writing production-ready code
-              using HTML, CSS, JavaScript on the Front-End and Spring,
-              Hibernate, Java, Maven, SQL on the Back-End.
+              Results-driven{" "}
+              <span className="text-emerald-400 font-medium">Backend Developer</span>{" "}
+              with over 2 years of professional experience designing and
+              delivering scalable, production-grade systems. Core expertise in
+              Java, Spring Boot, Hibernate, and MySQL, with strong hands-on
+              experience in cloud infrastructure across{" "}
+              <span className="text-emerald-400 font-medium">AWS</span>{" "}
+              (Lambda, S3, SQS, Secrets Manager) and{" "}
+              <span className="text-emerald-400 font-medium">Azure</span>{" "}
+              (Functions, Service Bus, Blob Storage). Additionally holds working
+              knowledge of React and TypeScript for front-end development.
+              Passionate about writing clean, maintainable code and building
+              products that solve real-world problems.
             </p>
 
             <a

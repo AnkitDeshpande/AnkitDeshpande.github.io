@@ -394,8 +394,8 @@ export default function Projects({ isDark }: Props) {
           >
             {(
               [
-                { key: "spotlight", icon: LayoutList, label: "Spotlight" },
                 { key: "slider", icon: SlidersHorizontal, label: "Slider" },
+                { key: "spotlight", icon: LayoutList, label: "Spotlight" },
                 { key: "grid", icon: LayoutGrid, label: "Grid" },
               ] as const
             ).map(({ key, icon: Icon, label }) => (

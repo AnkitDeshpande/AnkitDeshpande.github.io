@@ -101,9 +101,10 @@ export default function Home({ isDark }: Props) {
                 isDark ? "text-slate-400" : "text-slate-600",
               )}
             >
-              Back-End developer with extensive knowledge and 1200+ hours of
-              experience, working in web technologies — Java, Spring Boot, MySQL
-              & more.
+              Backend Developer with 2+ years of professional experience
+              building scalable systems with Java & Spring Boot, deploying
+              cloud-native solutions on AWS & Azure, with working knowledge
+              of React & TypeScript on the front-end.
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center md:justify-start">

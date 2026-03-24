@@ -33,6 +33,9 @@ dist-ssr/
 .DS_Store
 Thumbs.db
 
+# Claude Code internals
+.claude/
+
 # Logs
 *.log
 npm-debug.log*

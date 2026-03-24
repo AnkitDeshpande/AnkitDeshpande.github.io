@@ -7,6 +7,8 @@ import {
   techStackRow1,
   techStackRow2,
   techStackRow3,
+  techStackRow4,
+  techStackRow5,
 } from "../data/skills";
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -152,96 +154,102 @@ export default function Skills({ isDark }: Props) {
         </motion.div>
 
         {/* Accordion */}
-        <div className="max-w-2xl mx-auto mb-16 space-y-3">
-          {skillGroups.map((group, i) => {
-            const Icon = ICON_MAP[group.icon] ?? Code2;
-            const isOpen = openGroup === group.id;
-            return (
-              <motion.div
-                key={group.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className={clsx(
-                  "rounded-xl border overflow-hidden",
-                  isDark
-                    ? "border-slate-700 bg-slate-800"
-                    : "border-slate-200 bg-white",
-                )}
-              >
-                <button
-                  onClick={() => setOpenGroup(isOpen ? "" : group.id)}
-                  className="w-full flex items-center justify-between p-5"
+          <motion.div
+            className="max-w-3xl mx-auto w-full space-y-3 mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            {skillGroups.map((group, i) => {
+              const Icon = ICON_MAP[group.icon] ?? Code2;
+              const isOpen = openGroup === group.id;
+              return (
+                <motion.div
+                  key={group.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className={clsx(
+                    "rounded-xl border overflow-hidden",
+                    isDark
+                      ? "border-slate-700 bg-slate-800"
+                      : "border-slate-200 bg-white",
+                  )}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-emerald-500/10">
-                      <Icon size={18} className="text-emerald-400" />
-                    </div>
-                    <div className="text-left">
-                      <div
-                        className={clsx(
-                          "font-semibold",
-                          isDark ? "text-white" : "text-slate-900",
-                        )}
-                      >
-                        {group.title}
+                  <button
+                    onClick={() => setOpenGroup(isOpen ? "" : group.id)}
+                    className="w-full flex items-center justify-between p-5"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-emerald-500/10">
+                        <Icon size={18} className="text-emerald-400" />
                       </div>
-                      {group.subtitle && (
+                      <div className="text-left">
                         <div
                           className={clsx(
-                            "text-xs",
-                            isDark ? "text-slate-400" : "text-slate-500",
+                            "font-semibold",
+                            isDark ? "text-white" : "text-slate-900",
                           )}
                         >
-                          {group.subtitle}
+                          {group.title}
                         </div>
-                      )}
-                    </div>
-                  </div>
-                  <motion.div
-                    animate={{ rotate: isOpen ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <ChevronDown
-                      size={18}
-                      className={isDark ? "text-slate-400" : "text-slate-500"}
-                    />
-                  </motion.div>
-                </button>
-
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className={clsx(
-                        "px-5 pb-5 border-t",
-                        isDark ? "border-slate-700" : "border-slate-100",
-                      )}
-                    >
-                      <div className="pt-4">
-                        {group.skills.map((skill) => (
-                          <SkillBar
-                            key={skill.name}
-                            name={skill.name}
-                            percentage={skill.percentage}
-                            isDark={isDark}
-                            visible={visible && isOpen}
-                          />
-                        ))}
+                        {group.subtitle && (
+                          <div
+                            className={clsx(
+                              "text-xs",
+                              isDark ? "text-slate-400" : "text-slate-500",
+                            )}
+                          >
+                            {group.subtitle}
+                          </div>
+                        )}
                       </div>
+                    </div>
+                    <motion.div
+                      animate={{ rotate: isOpen ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <ChevronDown
+                        size={18}
+                        className={isDark ? "text-slate-400" : "text-slate-500"}
+                      />
                     </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
-        </div>
+                  </button>
 
-        {/* Tech stack */}
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className={clsx(
+                          "px-5 pb-5 border-t",
+                          isDark ? "border-slate-700" : "border-slate-100",
+                        )}
+                      >
+                        <div className="pt-4">
+                          {group.skills.map((skill) => (
+                            <SkillBar
+                              key={skill.name}
+                              name={skill.name}
+                              percentage={skill.percentage}
+                              isDark={isDark}
+                              visible={visible && isOpen}
+                            />
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+
+        {/* Tech Stack */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -259,6 +267,8 @@ export default function Skills({ isDark }: Props) {
           <TechStackRow items={techStackRow1} isDark={isDark} />
           <TechStackRow items={techStackRow2} isDark={isDark} />
           <TechStackRow items={techStackRow3} isDark={isDark} />
+          <TechStackRow items={techStackRow4} isDark={isDark} />
+          <TechStackRow items={techStackRow5} isDark={isDark} />
         </motion.div>
       </div>
     </section>
