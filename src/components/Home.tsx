@@ -75,6 +75,8 @@ export default function Home() {
             >
               <TypeAnimation
                 sequence={[
+                  "SDE at ZET credit card app",
+                  2000,
                   "Web Developer",
                   2000,
                   "Backend Engineer",
@@ -99,8 +101,8 @@ export default function Home() {
             >
               Backend Developer with 2+ years of professional experience
               building scalable systems with Java & Spring Boot, deploying
-              cloud-native solutions on AWS & Azure, with working knowledge
-              of React & TypeScript on the front-end.
+              cloud-native solutions on AWS & Azure, with working knowledge of
+              React & TypeScript on the front-end.
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center md:justify-start">
