@@ -1,18 +1,18 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import clsx from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  ExternalLink,
-  Github,
-  Video,
-  LayoutGrid,
-  LayoutList,
   ChevronLeft,
   ChevronRight,
+  ExternalLink,
+  Github,
+  LayoutGrid,
+  LayoutList,
   SlidersHorizontal,
+  Video,
 } from "lucide-react";
-import clsx from "clsx";
-import { projects, type Project } from "../data/projects";
+import { useState } from "react";
 import { useThemeContext } from "../context/ThemeContext";
+import { projects, type Project } from "../data/projects";
 
 const FALLBACK_SVG = (w: number, h: number) =>
   `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="%231e293b"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" font-family="sans-serif" font-size="14" fill="%2364748b">No Image</text></svg>`;
@@ -31,7 +31,7 @@ function ProjectLinks({
         <a
           href={project.liveUrl}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white text-xs font-medium transition-all duration-200"
         >
           <ExternalLink size={11} /> Live
@@ -41,7 +41,7 @@ function ProjectLinks({
         <a
           href={project.videoUrl}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500 hover:bg-blue-400 text-white text-xs font-medium transition-all duration-200"
         >
           <Video size={11} /> Demo
@@ -50,7 +50,7 @@ function ProjectLinks({
       <a
         href={project.repoUrl}
         target="_blank"
-        rel="noreferrer"
+        rel="noopener noreferrer"
         className={clsx(
           "flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all duration-200",
           isDark
@@ -333,11 +333,11 @@ function SliderView({ isDark }: { isDark: boolean }) {
               i === index
                 ? "w-6 h-2 bg-emerald-500"
                 : clsx(
-                    "w-2 h-2",
-                    isDark
-                      ? "bg-slate-600 hover:bg-slate-400"
-                      : "bg-slate-300 hover:bg-slate-400",
-                  ),
+                  "w-2 h-2",
+                  isDark
+                    ? "bg-slate-600 hover:bg-slate-400"
+                    : "bg-slate-300 hover:bg-slate-400",
+                ),
             )}
           />
         ))}
@@ -350,7 +350,7 @@ function SliderView({ isDark }: { isDark: boolean }) {
 export default function Projects() {
   const { isDark } = useThemeContext();
   const [layout, setLayout] = useState<"spotlight" | "grid" | "slider">(
-    "slider",
+    "grid",
   );
 
   return (

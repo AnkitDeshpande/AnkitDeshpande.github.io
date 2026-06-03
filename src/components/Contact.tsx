@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Phone, Mail, Linkedin, Github, Send, CheckCircle } from "lucide-react";
 import clsx from "clsx";
+import { motion } from "framer-motion";
+import { CheckCircle, Github, Linkedin, Mail, Phone, Send } from "lucide-react";
+import { useState } from "react";
 import { useThemeContext } from "../context/ThemeContext";
 
 const contactInfo = [
@@ -121,7 +121,7 @@ export default function Contact() {
                 key={label}
                 href={href}
                 target={href.startsWith("http") ? "_blank" : undefined}
-                rel="noreferrer"
+                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                 className={clsx(
                   "flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 group",
                   isDark
