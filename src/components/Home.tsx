@@ -1,7 +1,7 @@
-import { TypeAnimation } from "react-type-animation";
-import { motion } from "framer-motion";
-import { Linkedin, Github, ArrowDown, Mail } from "lucide-react";
 import clsx from "clsx";
+import { motion } from "framer-motion";
+import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
+import { TypeAnimation } from "react-type-animation";
 import { useThemeContext } from "../context/ThemeContext";
 import { scrollToSection } from "../utils/scroll";
 
@@ -30,7 +30,7 @@ export default function Home() {
               <a
                 href="https://www.linkedin.com/in/ankit-deshpande-54089221b/"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="p-2 rounded-full border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 transition-all duration-200"
               >
                 <Linkedin size={18} />
@@ -38,7 +38,7 @@ export default function Home() {
               <a
                 href="https://github.com/AnkitDeshpande"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className={clsx(
                   "p-2 rounded-full border transition-all duration-200",
                   isDark

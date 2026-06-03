@@ -37,7 +37,7 @@ export const projects: Project[] = [
       "Bus Reservation System Portal: Simplifying travel! Search, select, and reserve bus tickets seamlessly. Your journey, made easy.",
     techStack: ["HTML", "CSS", "JavaScript", "Hibernate", "Spring Boot", "MySQL"],
     image: "/img/book-my-bus.png",
-    liveUrl: "https://ankits-book-my-bus.netlify.app/",
+    liveUrl: "https://ankitdeshpande.github.io/Book-My-Bus/",
     repoUrl: "https://github.com/AnkitDeshpande/Book-My-Bus",
   },
   {

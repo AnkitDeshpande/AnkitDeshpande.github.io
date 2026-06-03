@@ -121,7 +121,7 @@ export default function Contact() {
                 key={label}
                 href={href}
                 target={href.startsWith("http") ? "_blank" : undefined}
-                rel="noreferrer"
+                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                 className={clsx(
                   "flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 group",
                   isDark

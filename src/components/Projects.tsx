@@ -31,7 +31,7 @@ function ProjectLinks({
         <a
           href={project.liveUrl}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white text-xs font-medium transition-all duration-200"
         >
           <ExternalLink size={11} /> Live
@@ -41,7 +41,7 @@ function ProjectLinks({
         <a
           href={project.videoUrl}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500 hover:bg-blue-400 text-white text-xs font-medium transition-all duration-200"
         >
           <Video size={11} /> Demo
@@ -50,7 +50,7 @@ function ProjectLinks({
       <a
         href={project.repoUrl}
         target="_blank"
-        rel="noreferrer"
+        rel="noopener noreferrer"
         className={clsx(
           "flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all duration-200",
           isDark
@@ -350,7 +350,7 @@ function SliderView({ isDark }: { isDark: boolean }) {
 export default function Projects() {
   const { isDark } = useThemeContext();
   const [layout, setLayout] = useState<"spotlight" | "grid" | "slider">(
-    "slider",
+    "grid",
   );
 
   return (
