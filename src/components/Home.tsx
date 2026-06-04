@@ -8,6 +8,19 @@ import { scrollToSection } from "../utils/scroll";
 export default function Home() {
   const { isDark } = useThemeContext();
 
+  const resumeViewUrl = "https://drive.google.com/file/d/1Cz0Z_vOqlPp3dlbedFtd8kGbEllrHF3v/view?usp=drive_link";
+  const resumeDownloadUrl = "https://drive.google.com/uc?export=download&id=1Cz0Z_vOqlPp3dlbedFtd8kGbEllrHF3v";
+
+  const handleResumeClick = () => {
+    const downloadLink = document.createElement("a");
+    downloadLink.href = resumeDownloadUrl;
+    downloadLink.download = "Ankit-Deshpande-Resume.pdf";
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  };
+
   return (
     <section
       id="home"
@@ -114,8 +127,10 @@ export default function Home() {
                 Contact Me
               </button>
               <a
-                href="/Ankit-Deshpande-Resume.pdf"
-                download
+                href={resumeViewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={handleResumeClick}
                 className={clsx(
                   "flex items-center gap-2 px-6 py-3 rounded-xl border font-medium transition-all duration-200",
                   isDark

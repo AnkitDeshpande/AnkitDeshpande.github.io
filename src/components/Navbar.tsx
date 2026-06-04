@@ -40,6 +40,19 @@ export default function Navbar({ onThemeToggle }: Props) {
     setMenuOpen(false);
   };
 
+  const resumeViewUrl = "https://drive.google.com/file/d/1Cz0Z_vOqlPp3dlbedFtd8kGbEllrHF3v/view?usp=drive_link";
+  const resumeDownloadUrl = "https://drive.google.com/uc?export=download&id=1Cz0Z_vOqlPp3dlbedFtd8kGbEllrHF3v";
+
+  const handleResumeClick = () => {
+    const downloadLink = document.createElement("a");
+    downloadLink.href = resumeDownloadUrl;
+    downloadLink.download = "Ankit-Deshpande-Resume.pdf";
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  };
+
   const navBg = isDark
     ? scrolled
       ? "bg-slate-900/95 backdrop-blur-md shadow-lg shadow-black/20"
@@ -89,8 +102,10 @@ export default function Navbar({ onThemeToggle }: Props) {
         {/* Right controls */}
         <div className="flex items-center gap-2">
           <a
-            href="/Ankit-Deshpande-Resume.pdf"
-            download
+            href={resumeViewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleResumeClick}
             className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-medium transition-all duration-200"
           >
             <Download size={14} />
@@ -156,8 +171,10 @@ export default function Navbar({ onThemeToggle }: Props) {
               </button>
             ))}
             <a
-              href="/Ankit-Deshpande-Resume.pdf"
-              download
+              href={resumeViewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleResumeClick}
               className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-medium transition-all duration-200"
             >
               <Download size={14} />
