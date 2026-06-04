@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
-import { Download, Briefcase, FolderOpen, Building2 } from "lucide-react";
 import clsx from "clsx";
+import { motion } from "framer-motion";
+import { Briefcase, Building2, Download, FolderOpen } from "lucide-react";
 import { useThemeContext } from "../context/ThemeContext";
 
 const stats = [
@@ -121,8 +121,18 @@ export default function About() {
             </p>
 
             <a
-              href="/Ankit-Deshpande-Resume.pdf"
-              download
+              href="https://drive.google.com/file/d/1Cz0Z_vOqlPp3dlbedFtd8kGbEllrHF3v/view?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                const downloadLink = document.createElement("a");
+                downloadLink.href = "https://drive.google.com/uc?export=download&id=1Cz0Z_vOqlPp3dlbedFtd8kGbEllrHF3v";
+                downloadLink.download = "Ankit-Deshpande-Resume.pdf";
+                downloadLink.style.display = "none";
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+              }}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-medium transition-all duration-200 shadow-lg shadow-emerald-500/25"
             >
               <Download size={16} />

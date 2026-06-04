@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Moon, Sun, Download } from "lucide-react";
-import { useScrollActive } from "../hooks/useScrollActive";
-import { useThemeContext } from "../context/ThemeContext";
-import { scrollToSection } from "../utils/scroll";
 import clsx from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
+import { Download, Menu, Moon, Sun, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useThemeContext } from "../context/ThemeContext";
+import { useScrollActive } from "../hooks/useScrollActive";
+import { scrollToSection } from "../utils/scroll";
 
 const NAV_LINKS = [
   { id: "home", label: "Home" },
@@ -38,6 +38,19 @@ export default function Navbar({ onThemeToggle }: Props) {
   const handleNavClick = (id: string) => {
     scrollToSection(id);
     setMenuOpen(false);
+  };
+
+  const resumeViewUrl = "https://drive.google.com/file/d/1Cz0Z_vOqlPp3dlbedFtd8kGbEllrHF3v/view?usp=drive_link";
+  const resumeDownloadUrl = "https://drive.google.com/uc?export=download&id=1Cz0Z_vOqlPp3dlbedFtd8kGbEllrHF3v";
+
+  const handleResumeClick = () => {
+    const downloadLink = document.createElement("a");
+    downloadLink.href = resumeDownloadUrl;
+    downloadLink.download = "Ankit-Deshpande-Resume.pdf";
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
   };
 
   const navBg = isDark
@@ -89,8 +102,10 @@ export default function Navbar({ onThemeToggle }: Props) {
         {/* Right controls */}
         <div className="flex items-center gap-2">
           <a
-            href="/Ankit-Deshpande-Resume.pdf"
-            download
+            href={resumeViewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleResumeClick}
             className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-medium transition-all duration-200"
           >
             <Download size={14} />
@@ -156,8 +171,10 @@ export default function Navbar({ onThemeToggle }: Props) {
               </button>
             ))}
             <a
-              href="/Ankit-Deshpande-Resume.pdf"
-              download
+              href={resumeViewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleResumeClick}
               className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-medium transition-all duration-200"
             >
               <Download size={14} />
