@@ -1,31 +1,34 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { useThemeContext } from "../context/ThemeContext";
 import ThreeScene from "./ThreeScene";
 
+const SECTION_IDS = ["home", "about", "skills", "github", "leetcode", "qualification", "projects", "contact"];
+
 export default function ThreeBackground() {
   const { isDark } = useThemeContext();
-  const [scrollSpeed, setScrollSpeed] = useState(0);
-  const prevRef = useRef(0);
-  const tickingRef = useRef(false);
-
-  const handleScroll = useCallback(() => {
-    if (!tickingRef.current) {
-      window.requestAnimationFrame(() => {
-        const diff = Math.abs(window.scrollY - prevRef.current);
-        prevRef.current = window.scrollY;
-        setScrollSpeed(Math.min(diff / 200, 2));
-        tickingRef.current = false;
-      });
-      tickingRef.current = true;
-    }
-  }, []);
+  const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        }
+      },
+      { threshold: 0.2, rootMargin: "-80px 0px 0px 0px" },
+    );
+
+    for (const id of SECTION_IDS) {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="fixed inset-0 z-0 pointer-events-none">
@@ -39,12 +42,12 @@ export default function ThreeBackground() {
         }}
         style={{ background: "transparent", opacity: isDark ? 1 : 0.6 }}
       >
-        <ThreeScene scrollSpeed={scrollSpeed} />
+        <ThreeScene activeSection={activeSection} />
         <EffectComposer>
           <Bloom
-            luminanceThreshold={0.15}
-            luminanceSmoothing={0.9}
-            intensity={0.6}
+            luminanceThreshold={0.1}
+            luminanceSmoothing={0.85}
+            intensity={0.8}
             mipmapBlur
           />
         </EffectComposer>

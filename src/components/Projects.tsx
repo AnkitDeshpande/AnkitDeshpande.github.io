@@ -65,16 +65,21 @@ function ProjectLinks({
 }
 
 function TiltCard({ children, className }: { children: React.ReactNode; className?: string }) {
-  const { ref, onMouseMove, onMouseLeave } = useTilt(6);
+  const { ref, glareRef, onMouseMove, onMouseLeave } = useTilt(10);
 
   return (
     <div
       ref={ref}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
-      className={clsx("tilt-card transition-all duration-200", className)}
+      className={clsx("tilt-card relative transition-all duration-200", className)}
       style={{ transformStyle: "preserve-3d" }}
     >
+      <div
+        ref={glareRef}
+        className="absolute inset-0 rounded-2xl pointer-events-none z-10 transition-opacity duration-300"
+        style={{ opacity: 0 }}
+      />
       {children}
     </div>
   );

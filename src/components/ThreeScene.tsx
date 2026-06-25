@@ -1,32 +1,46 @@
 import { useRef, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
+import { Line } from "@react-three/drei";
 import * as THREE from "three";
 
-const NUM_PARTICLES = 2500;
+const COLORS = {
+  emerald: "#10b981",
+  cyan: "#06b6d4",
+  emeraldLight: "#34d399",
+  emeraldDark: "#059669",
+  white: "#ffffff",
+};
 
-function Particles({ scrollSpeed }: { scrollSpeed: number }) {
+function GalaxyParticles() {
   const ref = useRef<THREE.Points>(null!);
-  const { positions, colors, sizes } = useMemo(() => {
-    const pos = new Float32Array(NUM_PARTICLES * 3);
-    const col = new Float32Array(NUM_PARTICLES * 3);
-    const siz = new Float32Array(NUM_PARTICLES);
+  const count = 6000;
+
+  const [positions, colors, sizes] = useMemo(() => {
+    const pos = new Float32Array(count * 3);
+    const col = new Float32Array(count * 3);
+    const siz = new Float32Array(count);
     const c = new THREE.Color();
 
-    for (let i = 0; i < NUM_PARTICLES; i++) {
-      const r = 4 + Math.random() * 12;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      pos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-      pos[i * 3 + 1] = r * Math.cos(phi) * 0.6;
-      pos[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
+    for (let i = 0; i < count; i++) {
+      const radius = 2 + Math.random() ** 2 * 18;
+      const angle = Math.random() * Math.PI * 2;
+      const spread = (Math.random() - 0.5) * 2 * (radius * 0.08);
 
-      c.setHSL(0.42 + Math.random() * 0.06, 0.7, 0.3 + Math.random() * 0.5);
+      pos[i * 3] = Math.cos(angle) * radius + spread;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 1.5 * (1 - radius / 20);
+      pos[i * 3 + 2] = Math.sin(angle) * radius + spread;
+
+      const hue = 0.38 + Math.random() * 0.12;
+      const sat = 0.4 + Math.random() * 0.5;
+      const light = 0.3 + Math.random() * 0.6;
+      c.setHSL(hue, sat, light);
       col[i * 3] = c.r;
       col[i * 3 + 1] = c.g;
       col[i * 3 + 2] = c.b;
-      siz[i] = 0.015 + Math.random() * 0.04;
+
+      siz[i] = 0.01 + Math.random() * 0.06 * (1 - radius / 22);
     }
-    return { positions: pos, colors: col, sizes: siz };
+    return [pos, col, siz];
   }, []);
 
   const geo = useMemo(() => {
@@ -37,16 +51,16 @@ function Particles({ scrollSpeed }: { scrollSpeed: number }) {
     return g;
   }, [positions, colors, sizes]);
 
-  useFrame((state) => {
+  useFrame(({ clock }) => {
     if (!ref.current) return;
-    ref.current.rotation.y = state.clock.elapsedTime * 0.015 + scrollSpeed * 0.3;
-    ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.008) * 0.05 + scrollSpeed * 0.1;
+    ref.current.rotation.y = clock.elapsedTime * 0.008;
+    ref.current.rotation.x = Math.sin(clock.elapsedTime * 0.005) * 0.03;
   });
 
   return (
     <points ref={ref} geometry={geo}>
       <pointsMaterial
-        size={0.04}
+        size={0.05}
         vertexColors
         transparent
         opacity={0.9}
@@ -58,178 +72,264 @@ function Particles({ scrollSpeed }: { scrollSpeed: number }) {
   );
 }
 
-function CentralShape() {
-  const ref = useRef<THREE.Mesh>(null!);
-  const wireRef = useRef<THREE.Mesh>(null!);
+function CentralTorusKnot() {
+  const groupRef = useRef<THREE.Group>(null!);
+  const knotRef = useRef<THREE.Mesh>(null!);
+  const glowRef = useRef<THREE.Mesh>(null!);
 
-  useFrame((state) => {
-    const t = state.clock.elapsedTime;
-    ref.current.rotation.x = t * 0.08;
-    ref.current.rotation.y = t * 0.12;
-    ref.current.position.y = Math.sin(t * 0.25) * 0.2;
-    wireRef.current.rotation.x = -t * 0.1;
-    wireRef.current.rotation.y = t * 0.15;
-    wireRef.current.position.y = Math.sin(t * 0.25 + 0.5) * 0.2;
+  useFrame(({ clock }) => {
+    const t = clock.elapsedTime;
+    groupRef.current.rotation.x = Math.sin(t * 0.05) * 0.1;
+    groupRef.current.rotation.y = t * 0.1;
+    groupRef.current.position.y = Math.sin(t * 0.2) * 0.15;
+    knotRef.current.rotation.x = t * 0.15;
+    knotRef.current.rotation.z = t * 0.1;
+    glowRef.current.rotation.x = -t * 0.08;
+    glowRef.current.rotation.y = t * 0.12;
   });
 
   return (
-    <group>
-      <mesh ref={ref}>
-        <torusKnotGeometry args={[1.0, 0.3, 180, 24]} />
+    <group ref={groupRef}>
+      <mesh ref={knotRef}>
+        <torusKnotGeometry args={[0.8, 0.25, 200, 32]} />
         <meshPhysicalMaterial
-          color="#10b981"
+          color={COLORS.emerald}
           metalness={0.95}
           roughness={0.05}
-          emissive="#10b981"
-          emissiveIntensity={0.4}
+          emissive={COLORS.emerald}
+          emissiveIntensity={0.6}
           transparent
-          opacity={0.9}
+          opacity={0.95}
         />
       </mesh>
-      <mesh ref={wireRef}>
-        <torusKnotGeometry args={[1.3, 0.04, 80, 16]} />
-        <meshBasicMaterial color="#34d399" wireframe transparent opacity={0.4} />
+      <mesh ref={glowRef}>
+        <torusKnotGeometry args={[1.0, 0.015, 128, 16]} />
+        <meshBasicMaterial color={COLORS.cyan} transparent opacity={0.5} />
+      </mesh>
+      <mesh>
+        <sphereGeometry args={[0.08, 16, 16]} />
+        <meshBasicMaterial color={COLORS.white} />
       </mesh>
     </group>
   );
 }
 
-function OrbitingShape({
-  radius,
-  color,
-  speed,
-  phase,
-  geometry,
-}: {
-  radius: number;
-  color: string;
-  speed: number;
-  phase: number;
-  geometry: THREE.BufferGeometry;
+function GlowingRing({ radius = 1.6, color = COLORS.emerald, opacity = 0.15 }) {
+  const ref = useRef<THREE.Mesh>(null!);
+  useFrame(({ clock }) => {
+    ref.current.rotation.x = Math.sin(clock.elapsedTime * 0.1) * 0.1;
+    ref.current.rotation.z = Math.cos(clock.elapsedTime * 0.08) * 0.05;
+  });
+
+  return (
+    <mesh ref={ref} rotation={[Math.PI / 2.5, 0, 0]}>
+      <ringGeometry args={[radius - 0.01, radius, 80]} />
+      <meshBasicMaterial color={color} transparent opacity={opacity} side={THREE.DoubleSide} depthWrite={false} />
+    </mesh>
+  );
+}
+
+function OrbitingShape({ radius, color, speed, phase, geometry }: {
+  radius: number; color: string; speed: number; phase: number; geometry: THREE.BufferGeometry;
 }) {
   const ref = useRef<THREE.Mesh>(null!);
-  const angleRef = useRef(phase);
+  const angle = useRef(phase);
 
   useFrame(() => {
-    angleRef.current += 0.005 * speed;
-    const a = angleRef.current;
+    angle.current += 0.004 * speed;
+    const a = angle.current;
     ref.current.position.x = Math.cos(a) * radius;
     ref.current.position.z = Math.sin(a) * radius;
-    ref.current.position.y = Math.sin(a * 0.7 + phase) * 0.4;
-    ref.current.rotation.x += 0.01 * speed;
-    ref.current.rotation.y += 0.02 * speed;
+    ref.current.position.y = Math.sin(a * 0.6 + phase) * 0.5;
+    ref.current.rotation.x += 0.008 * speed;
+    ref.current.rotation.y += 0.015 * speed;
   });
 
   return (
     <mesh ref={ref} geometry={geometry}>
       <meshPhysicalMaterial
         color={color}
-        metalness={0.4}
-        roughness={0.3}
+        metalness={0.6}
+        roughness={0.2}
         transparent
-        opacity={0.7}
+        opacity={0.85}
         emissive={color}
-        emissiveIntensity={0.15}
+        emissiveIntensity={0.3}
       />
     </mesh>
   );
 }
 
-function OrbitalRings() {
-  const ref = useRef<THREE.Group>(null!);
+function OrbitLines() {
+  const groupRef = useRef<THREE.Group>(null!);
+  const radii = [2.2, 3.0, 3.6, 2.6];
 
-  useFrame((state) => {
-    ref.current.rotation.y = state.clock.elapsedTime * 0.03;
-    ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.02) * 0.05;
-  });
-
-  const rings = useMemo(() => {
-    const data: { radius: number; color: string; opacity: number }[] = [
-      { radius: 1.8, color: "#10b981", opacity: 0.08 },
-      { radius: 2.8, color: "#34d399", opacity: 0.06 },
-      { radius: 3.8, color: "#06b6d4", opacity: 0.04 },
-    ];
-    return data;
+  const points = useMemo(() => {
+    return radii.map((radius) => {
+      const pts: [number, number, number][] = [];
+      for (let i = 0; i <= 64; i++) {
+        const theta = (i / 64) * Math.PI * 2;
+        pts.push([
+          Math.cos(theta) * radius,
+          Math.sin(theta * 0.6) * 0.5,
+          Math.sin(theta) * radius,
+        ]);
+      }
+      return pts;
+    });
   }, []);
 
+  useFrame(({ clock }) => {
+    groupRef.current.rotation.y = clock.elapsedTime * 0.02;
+  });
+
   return (
-    <group ref={ref}>
-      {rings.map((ring, i) => (
-        <mesh key={i} rotation={[Math.PI / 2, 0, i * 0.5]}>
-          <ringGeometry args={[ring.radius - 0.01, ring.radius, 64]} />
-          <meshBasicMaterial color={ring.color} transparent opacity={ring.opacity} side={THREE.DoubleSide} />
-        </mesh>
+    <group ref={groupRef}>
+      {points.map((pts, i) => (
+        <Line
+          key={i}
+          points={pts}
+          color={COLORS.cyan}
+          transparent
+          opacity={0.06 + i * 0.01}
+          lineWidth={1}
+        />
       ))}
     </group>
   );
 }
 
-function FloatingDots() {
-  const count = 80;
-  const ref = useRef<THREE.Points>(null!);
-  const { positions } = useMemo(() => {
-    const pos = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      const r = 1.6 + Math.random() * 0.8;
-      pos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-      pos[i * 3 + 1] = r * Math.cos(phi);
-      pos[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
+function ConnectionLines() {
+  const ref = useRef<THREE.LineSegments>(null!);
+
+  const geo = useMemo(() => {
+    const radii = [2.2, 3.0, 3.6, 2.6];
+    const positions: number[] = [];
+    for (const r of radii) {
+      for (let i = 0; i < 8; i++) {
+        const theta = (i / 8) * Math.PI * 2;
+        const x = Math.cos(theta) * r;
+        const z = Math.sin(theta) * r;
+        positions.push(0, 0, 0, x, Math.sin(theta * 0.6) * 0.5, z);
+      }
     }
-    return { positions: pos };
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+    return g;
+  }, []);
+
+  useFrame(({ clock }) => {
+    if (!ref.current) return;
+    ref.current.rotation.y = clock.elapsedTime * 0.02;
+  });
+
+  return (
+    <lineSegments ref={ref} geometry={geo}>
+      <lineBasicMaterial color={COLORS.emerald} transparent opacity={0.04} />
+    </lineSegments>
+  );
+}
+
+function ShootingStars() {
+  const count = 3;
+  const ref = useRef<THREE.Points>(null!);
+  const data = useMemo(() => {
+    const pos = new Float32Array(count * 3);
+    const speeds: number[] = [];
+    for (let i = 0; i < count; i++) {
+      pos[i * 3] = (Math.random() - 0.5) * 30;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 20;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 30;
+      speeds.push(0.1 + Math.random() * 0.2);
+    }
+    return { pos, speeds };
   }, []);
 
   const geo = useMemo(() => {
     const g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    g.setAttribute("position", new THREE.BufferAttribute(data.pos, 3));
     return g;
-  }, [positions]);
+  }, [data]);
 
-  useFrame((state) => {
+  useFrame((_, delta) => {
     if (!ref.current) return;
-    ref.current.rotation.y = state.clock.elapsedTime * 0.05;
-    ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.03) * 0.1;
+    const attr = ref.current.geometry.attributes.position;
+    const p = attr.array as Float32Array;
+    for (let i = 0; i < count; i++) {
+      p[i * 3] += delta * data.speeds[i] * 2;
+      p[i * 3 + 1] += delta * data.speeds[i] * 1.5;
+      p[i * 3 + 2] += delta * data.speeds[i] * 0.5;
+      if (p[i * 3] > 15) {
+        p[i * 3] = -15;
+        p[i * 3 + 1] = (Math.random() - 0.5) * 20;
+        p[i * 3 + 2] = (Math.random() - 0.5) * 30;
+      }
+    }
+    attr.needsUpdate = true;
   });
 
   return (
     <points ref={ref} geometry={geo}>
-      <pointsMaterial size={0.03} color="#10b981" transparent opacity={0.6} blending={THREE.AdditiveBlending} sizeAttenuation depthWrite={false} />
+      <pointsMaterial size={0.15} color={COLORS.white} transparent opacity={0.3} blending={THREE.AdditiveBlending} depthWrite={false} />
     </points>
   );
 }
 
-const icosahedronGeo = new THREE.IcosahedronGeometry(0.35);
-const octahedronGeo = new THREE.OctahedronGeometry(0.3);
-const dodecahedronGeo = new THREE.DodecahedronGeometry(0.25);
-const tetrahedronGeo = new THREE.TetrahedronGeometry(0.4);
+const icosahedronGeo = new THREE.IcosahedronGeometry(0.3);
+const octahedronGeo = new THREE.OctahedronGeometry(0.25);
+const dodecahedronGeo = new THREE.DodecahedronGeometry(0.22);
+const tetrahedronGeo = new THREE.TetrahedronGeometry(0.35);
+const sphereGeo = new THREE.SphereGeometry(0.2, 8, 8);
+const boxGeo = new THREE.BoxGeometry(0.3, 0.3, 0.3);
 
-export default function ThreeScene({ scrollSpeed = 0 }: { scrollSpeed: number }) {
+export default function ThreeScene({ activeSection = "home" }: { activeSection?: string }) {
   const sceneRef = useRef<THREE.Group>(null!);
   const { mouse } = useThree();
 
+  const sectionColors: Record<string, string> = {
+    home: COLORS.emerald,
+    about: "#8b5cf6",
+    skills: "#06b6d4",
+    github: "#38bdf8",
+    leetcode: "#facc15",
+    qualification: "#10b981",
+    projects: "#f472b6",
+    contact: "#10b981",
+  };
+
+  const accentColor = sectionColors[activeSection] || COLORS.emerald;
+
   useFrame(() => {
     if (!sceneRef.current) return;
-    sceneRef.current.rotation.x = (mouse.y * Math.PI) / 20;
-    sceneRef.current.rotation.y = (mouse.x * Math.PI) / 20;
+    const p = 0.03;
+    sceneRef.current.rotation.x = mouse.y * p;
+    sceneRef.current.rotation.y = mouse.x * p;
   });
 
   return (
     <group ref={sceneRef}>
-      <ambientLight intensity={0.3} />
-      <directionalLight position={[5, 5, 5]} intensity={1} color="#10b981" />
-      <directionalLight position={[-5, -5, -5]} intensity={0.5} color="#06b6d4" />
-      <pointLight position={[0, 0, 0]} intensity={0.8} color="#10b981" distance={10} />
+      <ambientLight intensity={0.2} />
+      <directionalLight position={[3, 5, 5]} intensity={0.8} color={COLORS.emerald} />
+      <directionalLight position={[-3, -5, -5]} intensity={0.4} color={COLORS.cyan} />
+      <pointLight position={[0, 0, 0]} intensity={1.5} color={accentColor} distance={12} decay={1.5} />
 
-      <Particles scrollSpeed={scrollSpeed} />
-      <OrbitalRings />
-      <CentralShape />
-      <FloatingDots />
+      <GalaxyParticles />
+      <ShootingStars />
+      <OrbitLines />
+      <ConnectionLines />
+
+      <CentralTorusKnot />
+
+      <GlowingRing radius={1.5} color={accentColor} opacity={0.12} />
+      <GlowingRing radius={2.0} color={COLORS.cyan} opacity={0.08} />
+      <GlowingRing radius={2.8} color={COLORS.emeraldLight} opacity={0.05} />
 
       <OrbitingShape radius={2.2} color="#06b6d4" speed={0.8} phase={0} geometry={icosahedronGeo} />
       <OrbitingShape radius={3.0} color="#34d399" speed={1.2} phase={2} geometry={octahedronGeo} />
       <OrbitingShape radius={3.6} color="#10b981" speed={0.6} phase={4} geometry={dodecahedronGeo} />
       <OrbitingShape radius={2.6} color="#059669" speed={1.0} phase={6} geometry={tetrahedronGeo} />
+      <OrbitingShape radius={4.0} color="#06b6d4" speed={0.5} phase={1} geometry={sphereGeo} />
+      <OrbitingShape radius={3.4} color="#34d399" speed={0.9} phase={3} geometry={boxGeo} />
     </group>
   );
 }
