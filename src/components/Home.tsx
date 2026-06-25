@@ -25,8 +25,8 @@ export default function Home() {
     <section
       id="home"
       className={clsx(
-        "min-h-screen flex items-center pt-16",
-        isDark ? "bg-slate-900" : "bg-white",
+        "min-h-screen flex items-center pt-16 section-glass",
+        isDark ? "bg-slate-900/60" : "bg-white/60",
       )}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16">

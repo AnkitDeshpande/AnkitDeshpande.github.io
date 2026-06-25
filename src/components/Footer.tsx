@@ -7,8 +7,8 @@ export default function Footer() {
   return (
     <footer
       className={clsx(
-        "py-6 border-t text-center",
-        isDark ? "border-slate-800 bg-slate-900" : "border-slate-200 bg-white",
+        "py-6 border-t text-center section-glass",
+        isDark ? "border-slate-800 bg-slate-900/60" : "border-slate-200 bg-white/60",
       )}
     >
       <p

@@ -61,3 +61,18 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Glass effect for content sections */
+.section-glass {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* 3D Card tilt container */
+.tilt-container {
+  perspective: 1000px;
+}
+.tilt-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+}

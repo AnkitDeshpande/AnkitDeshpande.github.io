@@ -13,11 +13,11 @@ import {
 import { useState } from "react";
 import { useThemeContext } from "../context/ThemeContext";
 import { projects, type Project } from "../data/projects";
+import { useTilt } from "../hooks/useTilt";
 
 const FALLBACK_SVG = (w: number, h: number) =>
   `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="%231e293b"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" font-family="sans-serif" font-size="14" fill="%2364748b">No Image</text></svg>`;
 
-// ─── Shared buttons ───────────────────────────────────────────────────────────
 function ProjectLinks({
   project,
   isDark,
@@ -64,7 +64,22 @@ function ProjectLinks({
   );
 }
 
-// ─── Spotlight layout (default) ───────────────────────────────────────────────
+function TiltCard({ children, className }: { children: React.ReactNode; className?: string }) {
+  const { ref, onMouseMove, onMouseLeave } = useTilt(6);
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      className={clsx("tilt-card transition-all duration-200", className)}
+      style={{ transformStyle: "preserve-3d" }}
+    >
+      {children}
+    </div>
+  );
+}
+
 function SpotlightView({ isDark }: { isDark: boolean }) {
   return (
     <div className="space-y-8">
@@ -77,77 +92,77 @@ function SpotlightView({ isDark }: { isDark: boolean }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55, delay: i * 0.07 }}
-            className={clsx(
-              "group flex flex-col md:flex-row rounded-2xl border overflow-hidden transition-all duration-300",
-              !isEven && "md:flex-row-reverse",
-              isDark
-                ? "border-slate-700 bg-slate-800 hover:border-emerald-500/40 hover:shadow-2xl hover:shadow-emerald-500/5"
-                : "border-slate-200 bg-white hover:border-emerald-400/40 hover:shadow-2xl hover:shadow-emerald-500/10",
-            )}
           >
-            {/* Image */}
-            <div className="relative md:w-2/5 overflow-hidden h-64 md:h-auto flex-shrink-0 bg-slate-900">
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = FALLBACK_SVG(400, 240);
-                }}
-              />
+            <TiltCard>
               <div
                 className={clsx(
-                  "absolute inset-0",
-                  isEven
-                    ? "bg-gradient-to-r from-transparent to-black/20 md:bg-gradient-to-l"
-                    : "bg-gradient-to-l from-transparent to-black/20 md:bg-gradient-to-r",
-                )}
-              />
-              {/* Number badge */}
-              <div className="absolute top-4 left-4 w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center">
-                <span className="text-white text-xs font-bold">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="flex flex-col justify-center flex-1 p-6 sm:p-8">
-              <h3
-                className={clsx(
-                  "text-xl font-bold mb-3",
-                  isDark ? "text-white" : "text-slate-900",
+                  "group flex flex-col md:flex-row rounded-2xl border overflow-hidden transition-all duration-300",
+                  !isEven && "md:flex-row-reverse",
+                  isDark
+                    ? "border-slate-700 bg-slate-800 hover:border-emerald-500/40 hover:shadow-2xl hover:shadow-emerald-500/5"
+                    : "border-slate-200 bg-white hover:border-emerald-400/40 hover:shadow-2xl hover:shadow-emerald-500/10",
                 )}
               >
-                {project.title}
-              </h3>
-              <p
-                className={clsx(
-                  "text-sm leading-relaxed mb-4",
-                  isDark ? "text-slate-400" : "text-slate-600",
-                )}
-              >
-                {project.description}
-              </p>
-              {/* Tech pills */}
-              <div className="flex flex-wrap gap-2 mb-5">
-                {project.techStack.map((t) => (
-                  <span
-                    key={t}
+                <div className="relative md:w-2/5 overflow-hidden h-64 md:h-auto flex-shrink-0 bg-slate-900">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = FALLBACK_SVG(400, 240);
+                    }}
+                  />
+                  <div
                     className={clsx(
-                      "px-2.5 py-1 rounded-full text-xs font-medium",
-                      isDark
-                        ? "bg-slate-700 text-emerald-400"
-                        : "bg-emerald-50 text-emerald-700",
+                      "absolute inset-0",
+                      isEven
+                        ? "bg-gradient-to-r from-transparent to-black/20 md:bg-gradient-to-l"
+                        : "bg-gradient-to-l from-transparent to-black/20 md:bg-gradient-to-r",
+                    )}
+                  />
+                  <div className="absolute top-4 left-4 w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex flex-col justify-center flex-1 p-6 sm:p-8">
+                  <h3
+                    className={clsx(
+                      "text-xl font-bold mb-3",
+                      isDark ? "text-white" : "text-slate-900",
                     )}
                   >
-                    {t}
-                  </span>
-                ))}
+                    {project.title}
+                  </h3>
+                  <p
+                    className={clsx(
+                      "text-sm leading-relaxed mb-4",
+                      isDark ? "text-slate-400" : "text-slate-600",
+                    )}
+                  >
+                    {project.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    {project.techStack.map((t) => (
+                      <span
+                        key={t}
+                        className={clsx(
+                          "px-2.5 py-1 rounded-full text-xs font-medium",
+                          isDark
+                            ? "bg-slate-700 text-emerald-400"
+                            : "bg-emerald-50 text-emerald-700",
+                        )}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <ProjectLinks project={project} isDark={isDark} />
+                </div>
               </div>
-              <ProjectLinks project={project} isDark={isDark} />
-            </div>
+            </TiltCard>
           </motion.div>
         );
       })}
@@ -155,7 +170,6 @@ function SpotlightView({ isDark }: { isDark: boolean }) {
   );
 }
 
-// ─── Grid layout ──────────────────────────────────────────────────────────────
 function GridView({ isDark }: { isDark: boolean }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -166,67 +180,70 @@ function GridView({ isDark }: { isDark: boolean }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: i * 0.08 }}
-          whileHover={{ y: -4 }}
-          className={clsx(
-            "flex flex-col rounded-2xl border overflow-hidden transition-all duration-300",
-            isDark
-              ? "border-slate-700 bg-slate-800 hover:border-emerald-500/40 hover:shadow-xl hover:shadow-emerald-500/5"
-              : "border-slate-200 bg-white hover:border-emerald-400/40 hover:shadow-xl hover:shadow-emerald-500/10",
-          )}
         >
-          <div className="relative overflow-hidden h-56 bg-slate-900">
-            <img
-              src={project.image}
-              alt={project.title}
-              className="w-full h-full object-contain transition-transform duration-500 hover:scale-105"
-              loading="lazy"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = FALLBACK_SVG(400, 176);
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-          </div>
-          <div className="flex flex-col flex-1 p-5">
-            <h3
+          <TiltCard>
+            <div
               className={clsx(
-                "font-bold text-base mb-2",
-                isDark ? "text-white" : "text-slate-900",
+                "flex flex-col rounded-2xl border overflow-hidden transition-all duration-300",
+                isDark
+                  ? "border-slate-700 bg-slate-800 hover:border-emerald-500/40 hover:shadow-xl hover:shadow-emerald-500/5"
+                  : "border-slate-200 bg-white hover:border-emerald-400/40 hover:shadow-xl hover:shadow-emerald-500/10",
               )}
             >
-              {project.title}
-            </h3>
-            <p
-              className={clsx(
-                "text-sm leading-relaxed mb-3 flex-1",
-                isDark ? "text-slate-400" : "text-slate-600",
-              )}
-            >
-              {project.description}
-            </p>
-            <div className="flex flex-wrap gap-1.5 mb-4">
-              {project.techStack.map((t) => (
-                <span
-                  key={t}
+              <div className="relative overflow-hidden h-56 bg-slate-900">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-contain transition-transform duration-500 hover:scale-105"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = FALLBACK_SVG(400, 176);
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+              </div>
+              <div className="flex flex-col flex-1 p-5">
+                <h3
                   className={clsx(
-                    "px-2 py-0.5 rounded-full text-[11px] font-medium",
-                    isDark
-                      ? "bg-slate-700 text-emerald-400"
-                      : "bg-emerald-50 text-emerald-700",
+                    "font-bold text-base mb-2",
+                    isDark ? "text-white" : "text-slate-900",
                   )}
                 >
-                  {t}
-                </span>
-              ))}
+                  {project.title}
+                </h3>
+                <p
+                  className={clsx(
+                    "text-sm leading-relaxed mb-3 flex-1",
+                    isDark ? "text-slate-400" : "text-slate-600",
+                  )}
+                >
+                  {project.description}
+                </p>
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  {project.techStack.map((t) => (
+                    <span
+                      key={t}
+                      className={clsx(
+                        "px-2 py-0.5 rounded-full text-[11px] font-medium",
+                        isDark
+                          ? "bg-slate-700 text-emerald-400"
+                          : "bg-emerald-50 text-emerald-700",
+                      )}
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                <ProjectLinks project={project} isDark={isDark} />
+              </div>
             </div>
-            <ProjectLinks project={project} isDark={isDark} />
-          </div>
+          </TiltCard>
         </motion.div>
       ))}
     </div>
   );
 }
 
-// ─── Slider layout ────────────────────────────────────────────────────────────
 function SliderView({ isDark }: { isDark: boolean }) {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -248,12 +265,10 @@ function SliderView({ isDark }: { isDark: boolean }) {
 
   return (
     <div className="flex flex-col items-center gap-6">
-      {/* Slide — full-bleed image with overlaid content */}
       <div
         className="relative w-full rounded-2xl overflow-hidden"
         style={{ height: 600 }}
       >
-        {/* Prev / Next arrows — sit outside the AnimatePresence so they don't slide */}
         <button
           onClick={prev}
           className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-sm transition-all duration-200"
@@ -278,7 +293,6 @@ function SliderView({ isDark }: { isDark: boolean }) {
             transition={{ duration: 0.45, ease: "easeInOut" }}
             className="absolute inset-0"
           >
-            {/* Full-bleed image */}
             <img
               src={project.image}
               alt={project.title}
@@ -288,17 +302,11 @@ function SliderView({ isDark }: { isDark: boolean }) {
                 (e.target as HTMLImageElement).src = FALLBACK_SVG(800, 520);
               }}
             />
-
-            {/* Gradient overlay — darker at bottom for readability */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
-
-            {/* Counter badge */}
             <div className="absolute top-5 right-5 px-3 py-1 rounded-full bg-emerald-500/90 backdrop-blur-sm text-white text-xs font-bold">
               {String(index + 1).padStart(2, "0")} /{" "}
               {String(projects.length).padStart(2, "0")}
             </div>
-
-            {/* Content pinned to bottom */}
             <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
               <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2">
                 {project.title}
@@ -322,7 +330,6 @@ function SliderView({ isDark }: { isDark: boolean }) {
         </AnimatePresence>
       </div>
 
-      {/* Dot controls */}
       <div className="flex gap-2">
         {projects.map((_, i) => (
           <button
@@ -346,7 +353,6 @@ function SliderView({ isDark }: { isDark: boolean }) {
   );
 }
 
-// ─── Main section ─────────────────────────────────────────────────────────────
 export default function Projects() {
   const { isDark } = useThemeContext();
   const [layout, setLayout] = useState<"spotlight" | "grid" | "slider">(
@@ -356,10 +362,12 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className={clsx("py-20", isDark ? "bg-slate-800/50" : "bg-slate-50")}
+      className={clsx(
+        "py-20 section-glass",
+        isDark ? "bg-slate-800/50" : "bg-slate-50/80",
+      )}
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header + toggle */}
         <motion.div
           className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14"
           initial={{ opacity: 0, y: 30 }}
@@ -386,7 +394,6 @@ export default function Projects() {
             </span>
           </div>
 
-          {/* Layout toggle */}
           <div
             className={clsx(
               "flex rounded-xl p-1 self-start sm:self-auto",
@@ -420,7 +427,6 @@ export default function Projects() {
           </div>
         </motion.div>
 
-        {/* Layout views */}
         <AnimatePresence mode="wait">
           <motion.div
             key={layout}

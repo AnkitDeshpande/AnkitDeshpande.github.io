@@ -12,7 +12,9 @@ import {
 } from "../data/skills";
 import { useThemeContext } from "../context/ThemeContext";
 
-const ICON_MAP: Record<string, React.ElementType> = {
+import type { LucideIcon } from "lucide-react";
+
+const ICON_MAP: Record<string, LucideIcon> = {
   Code2,
   Server,
   Users,
@@ -122,7 +124,7 @@ export default function Skills() {
   return (
     <section
       id="skills"
-      className={clsx("py-20", isDark ? "bg-slate-900" : "bg-white")}
+      className={clsx("py-20 section-glass", isDark ? "bg-slate-900/60" : "bg-white/60")}
       ref={sectionRef}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

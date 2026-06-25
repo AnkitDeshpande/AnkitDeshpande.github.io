@@ -8,4 +8,14 @@ export default defineConfig({
   server: {
     port: 1998,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          three: ["three"],
+          r3f: ["@react-three/fiber", "@react-three/drei", "@react-three/postprocessing"],
+        },
+      },
+    },
+  },
 });

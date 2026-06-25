@@ -272,7 +272,7 @@ export default function Qualification() {
   return (
     <section
       id="qualification"
-      className={clsx("py-20", isDark ? "bg-slate-900" : "bg-white")}
+      className={clsx("py-20 section-glass", isDark ? "bg-slate-900/60" : "bg-white/60")}
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
