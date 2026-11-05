@@ -1,7 +1,6 @@
 {
-    "cSpell.words": [
-        "UNICONS"
-    ],
-    "files.autoSave": "afterDelay",
-    "editor.tabSize": 4
+  "cSpell.words": ["UNICONS"],
+  "files.autoSave": "afterDelay",
+  "editor.tabSize": 4,
+  "git.ignoreLimitWarning": true
 }
