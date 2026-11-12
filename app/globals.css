@@ -179,6 +179,17 @@ a { color: inherit; text-decoration: none; }
   .container { padding-inline: var(--space-10); }
 }
 
+/* Hero image width variable */
+:root {
+  --img-w: clamp(200px, 35vw, 360px);
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --img-w: clamp(300px, 24vw, 420px);
+  }
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px; height: 1px;

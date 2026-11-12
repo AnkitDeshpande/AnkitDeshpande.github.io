@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ExternalLink, Code, Play } from "@/components/ui/Icons";
+import { ExternalLink, Code } from "@/components/ui/Icons";
 import { Card } from "@/components/ui";
 import { Project } from "@/lib/projects";
 import { cn } from "@/lib/utils";
@@ -22,17 +22,17 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: index * 0.1 }}
       className="group"
     >
-      <Card className="overflow-hidden h-full flex flex-col">
+      <Card className="overflow-hidden h-full flex flex-col min-w-0">
         <Link
           href={`/projects/${project.slug}`}
-          className="relative aspect-video overflow-hidden"
+          className="relative aspect-video overflow-hidden min-w-0"
           aria-label={`View ${project.title} case study`}
         >
           <Image
             src={project.images.hero}
             alt={`${project.title} preview`}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-bg/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -66,19 +66,19 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           </motion.a>
         </Link>
 
-        <div className="p-6 flex flex-col flex-1">
-          <div className="flex items-center gap-2 mb-3">
+        <div className="p-6 flex flex-col flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-3 flex-wrap">
             {project.featured && (
-              <span className="badge badge-crimson">Featured</span>
+              <span className="badge badge-crimson shrink-0">Featured</span>
             )}
-            <span className="text-xs font-mono text-fg-subtle">{project.duration}</span>
+            <span className="text-xs font-mono text-fg-subtle shrink-0">{project.duration}</span>
           </div>
 
-          <h3 className="font-display font-bold text-xl text-fg mb-2 group-hover:text-crimson-light transition-colors">
+          <h3 className="font-display font-bold text-xl text-fg mb-2 group-hover:text-crimson-light transition-colors truncate">
             {project.title}
           </h3>
 
-          <p className="text-fg-muted text-sm leading-relaxed mb-4 flex-1">
+          <p className="text-fg-muted text-sm leading-relaxed mb-4 flex-1 min-h-0">
             {project.summary}
           </p>
 
@@ -86,13 +86,13 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             {project.tech.slice(0, 2).flatMap((t) => t.items.slice(0, 3)).map((tech, i) => (
               <span
                 key={`${tech}-${i}`}
-                className="px-2 py-0.5 text-xs font-mono text-fg-muted bg-bg-elevated border border-border rounded hover:border-crimson/50 hover:text-crimson-light transition-colors"
+                className="px-2 py-0.5 text-xs font-mono text-fg-muted bg-bg-elevated border border-border rounded hover:border-crimson/50 hover:text-crimson-light transition-colors shrink-0"
               >
                 {tech}
               </span>
             ))}
             {project.tech.reduce((acc, t) => acc + t.items.length, 0) > 6 && (
-              <span className="px-2 py-0.5 text-xs font-mono text-fg-subtle bg-bg-elevated border border-border rounded">
+              <span className="px-2 py-0.5 text-xs font-mono text-fg-subtle bg-bg-elevated border border-border rounded shrink-0">
                 +{project.tech.reduce((acc, t) => acc + t.items.length, 0) - 6} more
               </span>
             )}
@@ -100,7 +100,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 
           <Link
             href={`/projects/${project.slug}`}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-crimson-light hover:text-crimson transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-crimson-light hover:text-crimson transition-colors mt-auto"
           >
             View Case Study
             <motion.span
@@ -122,10 +122,10 @@ interface FeaturedProjectProps {
 
 export function FeaturedProject({ project }: FeaturedProjectProps) {
   return (
-    <article className="group relative">
+    <article className="group relative min-w-0">
       <Link
         href={`/projects/${project.slug}`}
-        className="relative aspect-[16/10] overflow-hidden rounded-2xl"
+        className="relative aspect-[16/10] overflow-hidden rounded-2xl min-w-0"
         aria-label={`View ${project.title} case study`}
       >
         <Image
@@ -140,10 +140,10 @@ export function FeaturedProject({ project }: FeaturedProjectProps) {
         
         <div className="absolute bottom-0 left-0 right-0 p-8">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="badge badge-crimson">Featured</span>
-              <span className="text-sm font-mono text-fg-subtle">{project.duration}</span>
-              <span className="text-sm font-mono text-fg-subtle">{project.teamSize} person team</span>
+            <div className="flex items-center gap-3 mb-4 flex-wrap">
+              <span className="badge badge-crimson shrink-0">Featured</span>
+              <span className="text-sm font-mono text-fg-subtle shrink-0">{project.duration}</span>
+              <span className="text-sm font-mono text-fg-subtle shrink-0">{project.teamSize} person team</span>
             </div>
             <h2 className="font-display font-bold text-3xl lg:text-4xl text-fg mb-3 group-hover:text-crimson-light transition-colors">
               {project.title}
@@ -155,7 +155,7 @@ export function FeaturedProject({ project }: FeaturedProjectProps) {
               {project.tech.slice(0, 3).flatMap((t) => t.items.slice(0, 4)).map((tech, i) => (
                 <span
                   key={`${tech}-${i}`}
-                  className="px-3 py-1 text-sm font-mono text-fg bg-bg-elevated border border-border rounded-lg hover:border-crimson/50 hover:text-crimson-light transition-colors"
+                  className="px-3 py-1 text-sm font-mono text-fg bg-bg-elevated border border-border rounded-lg hover:border-crimson/50 hover:text-crimson-light transition-colors shrink-0"
                 >
                   {tech}
                 </span>
@@ -206,7 +206,7 @@ export function ProjectGrid({ projects, featured }: ProjectGridProps) {
           </motion.div>
         )}
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {projects.map((project, index) => (
             <ProjectCard key={project.slug} project={project} index={index} />
           ))}

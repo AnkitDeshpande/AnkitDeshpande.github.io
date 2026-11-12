@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://ankitdeshpande.vercel.app"),
   title: {
     default: "Ankit Deshpande · Backend Engineer",
     template: "%s | Ankit Deshpande",
