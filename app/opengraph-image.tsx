@@ -90,3 +90,5 @@ export default async function OpengraphImage() {
     size
   );
 }
+
+export const runtime = "edge";

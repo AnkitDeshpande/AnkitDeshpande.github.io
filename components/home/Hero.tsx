@@ -1,357 +1,253 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
-import Image from "next/image";
+import Link from "next/link";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
+import { FlowField } from "./FlowField";
+import { PortraitSlab } from "./PortraitSlab";
 
-const phrases = [
-  "Backend Engineer",
-  "Systems Thinker",
-  "Problem Solver",
-  "Code Craftsman",
+const stack = [
+  "Java 17",
+  "Spring Boot 3",
+  "PostgreSQL",
+  "Redis",
+  "Kubernetes",
+  "AWS",
+];
+
+/**
+ * Receding frames behind the portrait. Each sits at a fixed depth; the camera
+ * dolly moves them forward, so they separate from the slab as you scroll.
+ */
+const corridor = [
+  { z: -900, scale: 1.7, opacity: 0.1 },
+  { z: -560, scale: 1.34, opacity: 0.17 },
+  { z: -280, scale: 1.1, opacity: 0.26 },
 ];
 
 export function Hero() {
-  const [index, setIndex] = useState(0);
-  const [text, setText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const runway = useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion();
 
+  // The pinned journey is desktop-only. Phones and tablets get the same scene
+  // in normal flow, where a scroll-linked transform would only fight the layout.
+  const [wide, setWide] = useState(false);
   useEffect(() => {
-    const phrase = phrases[index];
-    let charIndex = 0;
-
-    const timer = setInterval(() => {
-      if (!isDeleting) {
-        setText(phrase.slice(0, ++charIndex));
-        if (charIndex === phrase.length) {
-          setIsDeleting(true);
-          setTimeout(() => clearInterval(timer), 1800);
-        }
-      } else {
-        setText(phrase.slice(0, --charIndex));
-        if (charIndex === 0) {
-          setIsDeleting(false);
-          setIndex((i) => (i + 1) % phrases.length);
-        }
-      }
-    }, isDeleting ? 35 : 70);
-
-    return () => clearInterval(timer);
-  }, [index, isDeleting]);
-
-  useEffect(() => {
-    if (!canvasRef.current) return;
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
-    if (!context) return;
-    const ctx: CanvasRenderingContext2D = context;
-
-    const dpr = Math.min(window.devicePixelRatio, 2);
-    let width = 0;
-    let height = 0;
-    let animationId: number;
-    let time = 0;
-
-    interface Particle {
-      x: number;
-      y: number;
-      px: number;
-      py: number;
-      vx: number;
-      vy: number;
-      width: number;
-      alpha: number;
-    }
-
-    const particles: Particle[] = [];
-    const PARTICLE_COUNT = 90;
-
-    function resize() {
-      const rect = canvas.parentElement?.getBoundingClientRect();
-      if (!rect) return;
-      width = rect.width;
-      height = rect.height;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    function initParticles() {
-      particles.length = 0;
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
-        const x = Math.random() * width;
-        const y = Math.random() * height;
-        particles.push({
-          x,
-          y,
-          px: x,
-          py: y,
-          vx: 0,
-          vy: 0,
-          width: Math.random() * 0.7 + 0.4,
-          alpha: Math.random() * 0.22 + 0.06,
-        });
-      }
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, width, height);
-      ctx.lineCap = "round";
-
-      particles.forEach((p) => {
-        ctx.beginPath();
-        ctx.moveTo(p.px, p.py);
-        ctx.lineTo(p.x, p.y);
-        ctx.strokeStyle = `rgba(224, 62, 62, ${p.alpha})`;
-        ctx.lineWidth = p.width;
-        ctx.stroke();
-      });
-    }
-
-    function update() {
-      time += 0.002;
-      particles.forEach((p) => {
-        p.px = p.x;
-        p.py = p.y;
-
-        // Flow field: the angle depends only on position, so nearby
-        // streamlines curve together and the field reads as a current.
-        const angle =
-          Math.sin(p.x * 0.004 + time) * 1.4 +
-          Math.cos(p.y * 0.004 - time) * 1.4;
-
-        p.vx = p.vx * 0.94 + Math.cos(angle) * 0.24;
-        p.vy = p.vy * 0.94 + Math.sin(angle) * 0.24;
-        p.x += p.vx;
-        p.y += p.vy;
-
-        // Wrap, and reset the previous point so no line spans the canvas.
-        if (p.x < -20) { p.x = width + 20; p.px = p.x; p.py = p.y; }
-        if (p.x > width + 20) { p.x = -20; p.px = p.x; p.py = p.y; }
-        if (p.y < -20) { p.y = height + 20; p.px = p.x; p.py = p.y; }
-        if (p.y > height + 20) { p.y = -20; p.px = p.x; p.py = p.y; }
-      });
-    }
-
-    function loop() {
-      update();
-      draw();
-      animationId = requestAnimationFrame(loop);
-    }
-
-    resize();
-    initParticles();
-    loop();
-
-    const handleResize = () => {
-      resize();
-      initParticles();
-    };
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      cancelAnimationFrame(animationId);
-      window.removeEventListener("resize", handleResize);
-    };
+    const query = window.matchMedia("(min-width: 1024px)");
+    const sync = () => setWide(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
   }, []);
+
+  const live = wide && !reduceMotion;
+
+  const { scrollYProgress } = useScroll({
+    target: runway,
+    offset: ["start start", "end end"],
+  });
+
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 90,
+    damping: 26,
+    restDelta: 0.0005,
+  });
+
+  // Camera
+  const worldZ = useTransform(progress, [0, 1], [-140, 230]);
+  const worldRotX = useTransform(progress, [0, 1], [0, -3]);
+
+  // The portrait object
+  const slabRotY = useTransform(progress, [0, 1], [-30, 5]);
+  const slabRotX = useTransform(progress, [0, 1], [12, -4]);
+  const slabRotZ = useTransform(progress, [0, 1], [-2, 1.5]);
+  const slabY = useTransform(progress, [0, 1], [0, -18]);
+
+  // Orbit rings
+  const ringSpin = useTransform(progress, [0, 1], [-18, 12]);
+
+  // Copy + chrome
+  const copyY = useTransform(progress, [0, 1], [0, -30]);
+  const hintOpacity = useTransform(progress, [0, 0.07], [1, 0]);
+  const railScale = useTransform(progress, [0, 1], [0.02, 1]);
 
   return (
     <section
-      className="relative min-h-[calc(100vh_-_5rem)] flex items-center justify-center px-6 overflow-hidden"
+      ref={runway}
       aria-labelledby="hero-title"
+      className="relative lg:h-[300vh]"
     >
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 -z-10 pointer-events-none"
-        aria-hidden="true"
-      />
+      <div className="[--slab-w:clamp(150px,44vw,220px)] relative flex min-h-[calc(100svh-4rem)] flex-col overflow-hidden lg:sticky lg:top-20 lg:h-[calc(100svh-5rem)] lg:min-h-0 lg:justify-center lg:[--slab-w:clamp(280px,26vw,384px)]">
+        <FlowField className="absolute inset-0 h-full w-full" animate={live} />
 
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-        className="relative max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-10 lg:gap-20 items-center min-h-[calc(100vh_-_9rem)]"
-      >
-        <div className="lg:order-2 relative">
-          <div className="relative aspect-square max-w-lg mx-auto">
-            <div className="absolute inset-0 overflow-hidden rounded-2xl">
-              <Image
-                src="/images/profile/ankit-portrait.png"
-                alt="Ankit Deshpande, Backend Engineer"
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
+        {/* ---------- 3D stage ---------- */}
+        <div
+          className="pointer-events-none relative h-[44svh] w-full lg:absolute lg:inset-0 lg:h-full"
+          style={{ perspective: "1600px", perspectiveOrigin: "50% 46%" }}
+          aria-hidden="true"
+        >
+          <motion.div
+            className="absolute inset-0"
+            style={{
+              transformStyle: "preserve-3d",
+              z: live ? worldZ : 0,
+              rotateX: live ? worldRotX : 0,
+              willChange: "transform",
+            }}
+          >
+            {/* Receding corridor */}
+            {corridor.map((frame, i) => (
+              <div
+                key={i}
+                className="absolute left-1/2 top-1/2 border border-crimson lg:left-[72%]"
                 style={{
-                  filter: "contrast(1.05) saturate(1.1)",
+                  width: "calc(var(--slab-w) * 1.7)",
+                  height: "calc(var(--slab-w) * 1.7)",
+                  marginLeft: "calc(var(--slab-w) * -0.85)",
+                  marginTop: "calc(var(--slab-w) * -0.85)",
+                  transform: `translateZ(${frame.z}px) scale(${frame.scale})`,
+                  opacity: frame.opacity,
                 }}
               />
-
-              <svg
-                viewBox="0 0 800 800"
-                preserveAspectRatio="xMidYMid slice"
-                className="absolute inset-0 h-full w-full font-display text-bg pointer-events-none select-none"
-                aria-hidden="true"
-              >
-                <text
-                  x="400"
-                  y="409"
-                  textAnchor="middle"
-                  fontSize="190"
-                  fontWeight="800"
-                  letterSpacing="-4"
-                  fill="currentColor"
-                  stroke="var(--color-crimson)"
-                  strokeWidth="3"
-                  paintOrder="stroke"
-                  textLength="772"
-                  lengthAdjust="spacingAndGlyphs"
-                >
-                  ANKIT
-                </text>
-                <text
-                  x="400"
-                  y="529"
-                  textAnchor="middle"
-                  fontSize="104"
-                  fontWeight="800"
-                  letterSpacing="-2"
-                  fill="currentColor"
-                  stroke="var(--color-crimson)"
-                  strokeWidth="3"
-                  paintOrder="stroke"
-                  textLength="772"
-                  lengthAdjust="spacingAndGlyphs"
-                >
-                  DESHPANDE
-                </text>
-              </svg>
-            </div>
-
-            <div
-              className="absolute -inset-4 rounded-[20px] border border-crimson/30 pointer-events-none -z-10"
-              aria-hidden="true"
-            />
-
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute -top-4 -right-4 w-24 h-24 border-2 border-crimson/20 rounded-full pointer-events-none"
-              aria-hidden="true"
-            />
-            <motion.div
-              animate={{
-                scale: [1, 1.15, 1],
-                opacity: [0.3, 0.6, 0.3],
-              }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -bottom-6 -left-6 w-16 h-16 border-2 border-crimson/30 rounded-lg pointer-events-none"
-              style={{ transformOrigin: "center" }}
-              aria-hidden="true"
-            />
-          </div>
-
-          <div
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-fg-subtle text-xs font-mono"
-            aria-hidden="true"
-          >
-            <span className="tracking-widest uppercase">Scroll</span>
-            <span className="block w-px h-8 bg-border-hover" />
-          </div>
-        </div>
-
-        <div className="lg:order-1 text-center lg:text-left">
-          <motion.h1
-            id="hero-title"
-            initial={{ opacity: 0, y: 40, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            className="font-display font-black tracking-tighter text-5xl lg:text-7xl xl:text-8xl leading-[0.95] mb-4 text-fg"
-          >
-            ANKIT<br />
-            <span className="text-crimson">DESHPANDE</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-            className="text-fg-muted text-sm lg:text-base font-medium tracking-widest uppercase mb-6"
-          >
-            Backend Engineer • Systems Thinker
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-            className="flex items-center justify-center lg:justify-start gap-3 mb-10 min-h-[2.5rem]"
-          >
-            <span className="text-fg-subtle text-lg font-mono">I'm a</span>
-            <span className="text-crimson-light font-mono text-lg font-medium" aria-live="polite" role="status">
-              {text}
-            </span>
-            <span className="text-crimson font-mono text-lg font-medium animate-pulse" aria-hidden="true">|</span>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
-            className="text-fg-muted text-lg lg:text-xl max-w-xl mb-12 leading-relaxed"
-          >
-            3+ years crafting scalable backends with Java, Spring Boot & cloud-native architectures.
-            I care about clean code, observable systems, and developer experience.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
-          >
-            <a
-              href="#projects"
-              className="group relative px-8 py-4 bg-crimson text-bg font-semibold rounded-lg overflow-hidden transition-all duration-200 hover:shadow-crimson hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <span className="relative z-10">View Work</span>
-              <motion.span
-                className="absolute inset-0 bg-crimson-hover scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-200 ease-out"
-                layoutId="cta-fill"
-              />
-            </a>
-            <a
-              href="#contact"
-              className="px-8 py-4 border-2 border-border-hover text-fg font-semibold rounded-lg transition-all duration-200 hover:border-crimson hover:bg-bg-elevated hover:text-crimson-light active:scale-[0.98]"
-            >
-              Get in Touch
-            </a>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.7 }}
-            className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mt-12 pt-8 border-t border-border"
-          >
-            <span className="text-fg-subtle text-xs font-mono tracking-wider">Stack:</span>
-            {["Java 17", "Spring Boot 3", "PostgreSQL", "Redis", "Kubernetes", "AWS", "TypeScript", "React"].map((tech, i) => (
-              <motion.span
-                key={tech}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.8 + i * 0.05, type: "spring", stiffness: 300, damping: 25 }}
-                className="px-3 py-1 text-xs font-mono text-fg-muted bg-bg-elevated border border-border rounded-full hover:border-crimson/50 hover:text-crimson-light transition-colors duration-200"
-              >
-                {tech}
-              </motion.span>
             ))}
+
+            {/* Orbit rings */}
+            <div
+              className="absolute left-1/2 top-1/2 rounded-full lg:left-[72%]"
+              style={{
+                width: "calc(var(--slab-w) * 2.35)",
+                height: "calc(var(--slab-w) * 2.35)",
+                marginLeft: "calc(var(--slab-w) * -1.175)",
+                marginTop: "calc(var(--slab-w) * -1.175)",
+                transform: "translateZ(-640px) rotateX(68deg)",
+              }}
+            >
+              <motion.div
+                className="h-full w-full rounded-full border border-crimson/25"
+                style={{ rotate: live ? ringSpin : 0 }}
+              />
+            </div>
+            <div
+              className="absolute left-1/2 top-1/2 rounded-full border border-crimson/15 lg:left-[72%]"
+              style={{
+                width: "calc(var(--slab-w) * 1.75)",
+                height: "calc(var(--slab-w) * 1.75)",
+                marginLeft: "calc(var(--slab-w) * -0.875)",
+                marginTop: "calc(var(--slab-w) * -0.875)",
+                transform: "translateZ(-380px) rotateX(76deg)",
+              }}
+            />
+
+            {/* The portrait slab */}
+            <div
+              className="absolute left-1/2 top-1/2 lg:left-[72%]"
+              style={{
+                transformStyle: "preserve-3d",
+                translate: "-50% -50%",
+              }}
+            >
+              <motion.div
+                style={{
+                  transformStyle: "preserve-3d",
+                  rotateY: live ? slabRotY : -14,
+                  rotateX: live ? slabRotX : 7,
+                  rotate: live ? slabRotZ : 0,
+                  y: live ? slabY : 0,
+                  willChange: "transform",
+                }}
+              >
+                <PortraitSlab />
+              </motion.div>
+            </div>
           </motion.div>
         </div>
-      </motion.div>
+
+        {/* ---------- Copy ---------- */}
+        <div className="relative z-10 w-full px-6 pb-12 lg:absolute lg:inset-0 lg:flex lg:items-center lg:pb-0">
+          <div className="mx-auto w-full max-w-7xl lg:pr-[46%]">
+            <motion.div style={{ y: live ? copyY : 0 }}>
+              <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.32em] text-crimson">
+                Backend Engineer
+                <span className="mx-2 text-border-hover">/</span>
+                <span className="text-fg-subtle">Bengaluru, India</span>
+              </p>
+
+              <h1 id="hero-title" className="sr-only">
+                Ankit Deshpande, Backend Engineer
+              </h1>
+
+              <p className="mb-5 max-w-xl font-display text-[2rem] font-bold leading-[1.05] tracking-tight text-fg sm:text-4xl lg:text-5xl">
+                Systems that hold up
+                <br />
+                <span className="text-crimson">under load.</span>
+              </p>
+
+              <p className="mb-8 hidden max-w-md leading-relaxed text-fg-muted sm:block">
+                3+ years building Java and Spring Boot services, observable
+                pipelines, and cloud-native infrastructure that stays boring in
+                production.
+              </p>
+
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/projects"
+                  className="inline-flex items-center justify-center rounded-lg bg-crimson px-7 py-3.5 font-semibold text-bg transition-colors duration-200 hover:bg-crimson-hover"
+                >
+                  View Work
+                </Link>
+                <a
+                  href="#contact"
+                  className="inline-flex items-center justify-center rounded-lg border border-border-hover px-7 py-3.5 font-semibold text-fg transition-colors duration-200 hover:border-crimson hover:bg-bg-elevated hover:text-crimson-light"
+                >
+                  Get in Touch
+                </a>
+              </div>
+
+              <div className="mt-9 hidden flex-wrap items-center gap-2 sm:flex">
+                <span className="mr-1 font-mono text-[10px] uppercase tracking-[0.2em] text-fg-subtle">
+                  Stack
+                </span>
+                {stack.map((tech) => (
+                  <span
+                    key={tech}
+                    className="rounded-full border border-border bg-bg-elevated px-3 py-1 font-mono text-[11px] text-fg-muted transition-colors duration-200 hover:border-crimson/50 hover:text-crimson-light"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* ---------- Chrome ---------- */}
+        <motion.div
+          className="pointer-events-none absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 lg:flex"
+          style={{ opacity: live ? hintOpacity : 1 }}
+          aria-hidden="true"
+        >
+          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-fg-subtle">
+            Scroll
+          </span>
+          <span className="block h-10 w-px bg-border" />
+        </motion.div>
+
+        <div
+          className="pointer-events-none absolute right-8 top-1/2 hidden h-40 w-px -translate-y-1/2 bg-border lg:block"
+          aria-hidden="true"
+        >
+          <motion.span
+            className="absolute inset-x-0 top-0 block h-full origin-top bg-crimson"
+            style={{ scaleY: live ? railScale : 1 }}
+          />
+        </div>
+      </div>
     </section>
   );
 }
