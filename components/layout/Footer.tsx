@@ -51,19 +51,29 @@ export function Footer() {
             <h3 className="font-display font-semibold text-fg mb-4">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="#projects" className="text-fg-muted hover:text-crimson-light transition-colors text-sm">
+                <a href="#projects" className="text-fg-muted hover:text-crimson-light transition-colors text-sm">
                   Work
-                </Link>
+                </a>
               </li>
               <li>
-                <Link href="#about" className="text-fg-muted hover:text-crimson-light transition-colors text-sm">
-                  About
-                </Link>
+                <a href="#experience" className="text-fg-muted hover:text-crimson-light transition-colors text-sm">
+                  Experience
+                </a>
               </li>
               <li>
-                <Link href="#contact" className="text-fg-muted hover:text-crimson-light transition-colors text-sm">
+                <a href="#skills" className="text-fg-muted hover:text-crimson-light transition-colors text-sm">
+                  Skills
+                </a>
+              </li>
+              <li>
+                <a href="#values" className="text-fg-muted hover:text-crimson-light transition-colors text-sm">
+                  Values
+                </a>
+              </li>
+              <li>
+                <a href="#contact" className="text-fg-muted hover:text-crimson-light transition-colors text-sm">
                   Contact
-                </Link>
+                </a>
               </li>
               <li>
                 <a

@@ -79,6 +79,7 @@ export function Hero() {
 
   return (
     <section
+      id="hero"
       ref={runway}
       aria-labelledby="hero-title"
       className="relative lg:h-[300vh]"

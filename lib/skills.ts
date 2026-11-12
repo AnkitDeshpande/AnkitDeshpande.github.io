@@ -25,7 +25,6 @@ export const skills: Skill[] = [
       { type: "project", title: "Book My Bus: 10k+ daily transactions", url: "/projects/book-my-bus", description: "High-throughput backend with Spring Boot 3, virtual threads" },
       { type: "project", title: "Wheel Estate: Rental management system", url: "/projects/wheel-estate", description: "Multi-module Spring Boot app with complex domain logic" },
       { type: "project", title: "SkyWay Finder: Flight booking system", url: "/projects/skyway-finder", description: "Desktop app with Swing + Hibernate" },
-      { type: "open-source", title: "Spring Boot Starter Template", url: "https://github.com/AnkitDeshpande/spring-boot-starter", description: "Opinionated starter with observability, testing, CI" },
     ],
   },
   {
@@ -37,7 +36,6 @@ export const skills: Skill[] = [
     evidence: [
       { type: "project", title: "Book My Bus", url: "/projects/book-my-bus", description: "Microservices-ready modular monolith with 4 services" },
       { type: "project", title: "Fusion Wear: E-commerce with Spring Security", url: "/projects/fusion-wear", description: "Dual auth (user/admin), method-level security, JWT + sessions" },
-      { type: "article", title: "Testing Spring Boot with Testcontainers", url: "/writing/spring-testcontainers", description: "Integration testing patterns for real databases" },
       { type: "talk", title: "Scaling Spring Boot on AWS", url: "https://youtube.com/@ankitdeshpande", description: "Internal tech talk on EC2, RDS, ElastiCache tuning" },
     ],
   },
@@ -50,7 +48,6 @@ export const skills: Skill[] = [
     evidence: [
       { type: "project", title: "Book My Bus Frontend", url: "/projects/book-my-bus", description: "React 18 + TypeScript + React Query + strict config" },
       { type: "project", title: "E-Basket Marketplace", url: "/projects/e-basket", description: "Type-safe API layer with Zod schemas" },
-      { type: "open-source", title: "TypeScript Config Presets", url: "https://github.com/AnkitDeshpande/tsconfig", description: "Shareable strict configs for Node, React, Library" },
     ],
   },
   {
@@ -62,7 +59,6 @@ export const skills: Skill[] = [
     evidence: [
       { type: "project", title: "Book My Bus Frontend", url: "/projects/book-my-bus", description: "Real-time seat maps, optimistic updates, cache invalidation" },
       { type: "project", title: "This Portfolio", url: "/", description: "Next.js 15 App Router, Framer Motion, Tailwind v4" },
-      { type: "article", title: "React Query Patterns for Backend Engineers", url: "/writing/react-query-backend", description: "Server state management mental models" },
     ],
   },
   {
@@ -74,7 +70,6 @@ export const skills: Skill[] = [
     evidence: [
       { type: "project", title: "Book My Bus: PostgreSQL on RDS", url: "/projects/book-my-bus", description: "Read replicas, connection pooling, advisory locks" },
       { type: "project", title: "Wheel Estate: Complex relational model", url: "/projects/wheel-estate", description: "Vehicle hierarchy, pricing rules, booking constraints" },
-      { type: "article", title: "PostgreSQL Indexing Strategies", url: "/writing/postgres-indexing", description: "B-tree, GIN, BRIN, partial, expression indexes" },
     ],
   },
   {
@@ -142,7 +137,6 @@ export const skills: Skill[] = [
     description: "Git workflows, GitHub Actions, GitLab CI, trunk-based development",
     evidence: [
       { type: "project", title: "All Projects: GitHub Actions pipelines", description: "Matrix builds, dependency caching, security scanning, deploy" },
-      { type: "open-source", title: "Reusable GitHub Actions", url: "https://github.com/AnkitDeshpande/gh-actions", description: "Composite actions for Java, Node, Docker" },
     ],
   },
   {
@@ -153,7 +147,6 @@ export const skills: Skill[] = [
     description: "Prometheus, Grafana, OpenTelemetry, distributed tracing, alerting",
     evidence: [
       { type: "project", title: "Book My Bus: Full observability stack", url: "/projects/book-my-bus", description: "RED metrics, exemplars, correlation IDs, SLO dashboards" },
-      { type: "article", title: "Implementing Distributed Tracing in Spring Boot", url: "/writing/spring-observability", description: "Micrometer + OpenTelemetry + Tempo" },
     ],
   },
   {
@@ -176,7 +169,6 @@ export const skills: Skill[] = [
     description: "Unit, integration, contract, e2e, property-based, mutation testing",
     evidence: [
       { type: "project", title: "Book My Bus: Test pyramid", url: "/projects/book-my-bus", description: "JUnit 5, Testcontainers, MockMvc, RestAssured, Playwright" },
-      { type: "article", title: "Testing Strategies for Spring Boot", url: "/writing/spring-testing", description: "Slice tests, @DataJpaTest, @WebMvcTest, contract tests" },
     ],
   },
   {

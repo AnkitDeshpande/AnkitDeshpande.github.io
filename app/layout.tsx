@@ -5,7 +5,6 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ankitdeshpande.dev"),
   title: {
     default: "Ankit Deshpande · Backend Engineer",
     template: "%s | Ankit Deshpande",
@@ -40,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://ankitdeshpande.dev",
+    url: "https://ankitdeshpande.vercel.app",
     siteName: "Ankit Deshpande",
     title: "Ankit Deshpande · Backend Engineer",
     description: "Backend engineer crafting scalable systems with Java, Spring Boot, and cloud-native architectures.",
@@ -49,7 +48,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ankit Deshpande · Backend Engineer",
     description: "Backend engineer crafting scalable systems with Java, Spring Boot, and cloud-native architectures.",
-    creator: "@ankitdeshpande",
   },
   verification: {
     google: "google-site-verification-code",

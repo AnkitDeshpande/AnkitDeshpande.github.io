@@ -13,14 +13,13 @@ export const siteConfig = {
 export const socialLinks = {
   github: "https://github.com/AnkitDeshpande",
   linkedin: "https://www.linkedin.com/in/ankit-deshpande-54089221b/",
-  twitter: "https://twitter.com/ankitdeshpande",
   email: "mailto:ankitdeshpande1998@gmail.com",
 } as const;
 
 export const navItems = [
-  { label: "Work", href: "/projects" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Work", href: "#projects" },
+  { label: "About", href: "#experience" },
+  { label: "Contact", href: "#contact" },
 ] as const;
 
 export const techCategories = [
